@@ -33,11 +33,17 @@ void CallBackFuncMouse(int event, int x, int y, int flags, void* userdata){
 window::window(string name, int width, int height){
     namedWindow(name,0);
     m_nameGraph=name;
-    m_image = std::make_unique<cv::Mat>(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
+    m_image = std::make_unique<cv::Mat>(height, width, CV_8UC3, cv::Scalar(255, 255, 255));
     m_width = width;
     m_heigth= height;
     //set the callback function for any mouse event
     setMouseCallback(name, CallBackFuncMouse, this);
+
+    for (int i = 0; i<height; i += 50)
+       cv::line(*m_image, Point(0, i), Point(width, i), cv::Scalar(0, 0, 0));
+
+    for (int i = 0; i<width; i += 50)
+       cv::line(*m_image, Point(i, 0), Point(i, height), cv::Scalar(0, 0, 0));
 }
 
 window::~window(){
