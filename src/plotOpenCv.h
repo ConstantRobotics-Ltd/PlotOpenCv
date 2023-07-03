@@ -11,6 +11,13 @@
 using namespace cv;
 using namespace std;
 
+enum class PlotColor
+{
+    RED,
+    BLUE,
+    GREEN,
+};
+
 class _2Dplot{
 public:
     _2Dplot(std::vector<float>*Points)
@@ -37,7 +44,7 @@ public:
     ~window();
 
     // Method to render plot on window.
-    void renderPlot(_2Dplot plot, int dt=1);
+    void renderPlot(_2Dplot plot, int dt=1, PlotColor color = PlotColor::RED);
 
     // Showing graph with rendered plots.
     void graphShow();

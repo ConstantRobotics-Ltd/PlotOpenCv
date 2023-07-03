@@ -31,7 +31,7 @@ int main()
 
     window myWindow("Test",1280,720);
     myWindow.renderPlot(myPlot,1);
-    myWindow.renderPlot(myPlot2);
+    myWindow.renderPlot(myPlot2,1,PlotColor::BLUE);
     myWindow.graphShow();
     waitKey(0);
 
