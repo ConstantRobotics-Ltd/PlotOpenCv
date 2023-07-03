@@ -44,7 +44,7 @@ window::~window(){
     // delete m_image;
 }
 
-void window::renderPlot(_2Dplot plot, int dt, PlotColor color){
+void window::renderPlot(_2Dplot plot, int dt, PlotColor color, int tickness){
 
     plot.m_out_max = m_heigth*plot.m_scale/100;
     // offset value is different for dataset which has negative values
@@ -71,7 +71,6 @@ void window::renderPlot(_2Dplot plot, int dt, PlotColor color){
         line_color.val[1] = 255;
         line_color.val[2] = 0;
     }
-
     else if(color == PlotColor::RED)
     {
         line_color.val[0] = 0;
@@ -79,10 +78,7 @@ void window::renderPlot(_2Dplot plot, int dt, PlotColor color){
         line_color.val[2] = 255;
     }
 
-
-
     int t = 0;
-
 
     // Line drawn using 8 connected
     for(int i = 1; i<plot.m_points->size() ; ++i)
@@ -93,7 +89,7 @@ void window::renderPlot(_2Dplot plot, int dt, PlotColor color){
         pCurrent.x=t;
         pCurrent.y=(mapp(plot.m_points->at(i),plot.m_in_min,plot.m_in_max,plot.m_out_max,plot.m_out_min)+plot.m_offsetY );
 
-        line(*m_image,pPrev ,pCurrent,line_color,plot.m_thickness, LINE_8);
+        line(*m_image,pPrev ,pCurrent,line_color,tickness, LINE_8);
     }
 }
 

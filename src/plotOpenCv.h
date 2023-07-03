@@ -28,7 +28,6 @@ public:
     }
     ~_2Dplot(){}
 
-    int m_thickness = 1;
     float m_scale = 50;
     float m_in_max;
     float m_in_min;
@@ -44,7 +43,7 @@ public:
     ~window();
 
     // Method to render plot on window.
-    void renderPlot(_2Dplot plot, int dt=1, PlotColor color = PlotColor::RED);
+    void renderPlot(_2Dplot plot, int dt=1, PlotColor color = PlotColor::RED, int tickness = 1);
 
     // Showing graph with rendered plots.
     void graphShow();

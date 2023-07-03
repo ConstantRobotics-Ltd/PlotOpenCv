@@ -30,8 +30,8 @@ int main()
     _2Dplot myPlot2(&linePoints2);
 
     window myWindow("Test",1280,720);
-    myWindow.renderPlot(myPlot,1);
-    myWindow.renderPlot(myPlot2,1,PlotColor::BLUE);
+    myWindow.renderPlot(myPlot,1,PlotColor::RED,1);
+    myWindow.renderPlot(myPlot2,1,PlotColor::BLUE,5);
     myWindow.graphShow();
     waitKey(0);
 
