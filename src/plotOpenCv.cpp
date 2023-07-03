@@ -6,31 +6,32 @@ float mapp(float x, float in_min, float in_max, float out_min, float out_max) {
 }
 
 
-
+// This method will be used for some features like zoom in, move along x/y etc.
 void CallBackFuncMouse(int event, int x, int y, int flags, void* userdata){
-    window * a = static_cast<window *>(userdata);
+
+    // window which event is captured.
+    window * current_window = static_cast<window *>(userdata);
 
     if  ( event == EVENT_LBUTTONDOWN )
     {
-        a->hello();
-        cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+       // cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
     }
     else if  ( event == EVENT_RBUTTONDOWN )
     {
-        cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+        //cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
     }
     else if  ( event == EVENT_MBUTTONDOWN )
     {
-        cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+       // cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
     }
     else if ( event == EVENT_MOUSEMOVE )
     {
-        cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
+       // cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
     }
 }
 
 window::window(string name, int width, int height){
-    namedWindow(name,1);
+    namedWindow(name,0);
     m_nameGraph=name;
     m_image = std::make_unique<cv::Mat>(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
     m_width = width;

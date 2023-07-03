@@ -13,7 +13,6 @@ using namespace std;
 
 class _2Dplot{
 public:
-
     _2Dplot(std::vector<float>*Points)
     {
         m_in_max= *max_element(Points->begin(),Points->end());
@@ -30,20 +29,18 @@ public:
     float m_out_min=0;
     int m_offsetY=0;
     std::vector<float>*m_points;
-private:
-
 };
 
 class window{
 public:
-
     window(string name,int width = 1280, int height = 720);
     ~window();
-    int i=0;
 
+    // Method to render plot on window.
     void renderPlot(_2Dplot plot, int dt=1);
+
+    // Showing graph with rendered plots.
     void graphShow();
-    void hello(){cout << "hello and i : "<<i++ << endl;}
 
 private:
     std::unique_ptr<cv::Mat> m_image;
@@ -51,7 +48,6 @@ private:
     int m_width;
     int m_heigth;
     string m_nameGraph;
-
 };
 
 #endif // PLOTCV_H
