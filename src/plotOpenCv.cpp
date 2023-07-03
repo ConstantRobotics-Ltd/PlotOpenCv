@@ -39,6 +39,13 @@ window::window(string name, int width, int height){
     //set the callback function for any mouse event
     setMouseCallback(name, CallBackFuncMouse, this);
 
+
+    // horizontal scale
+    cv::line(*m_image, Point(0, height/2), Point(width, height/2), cv::Scalar(0, 128, 128),5);
+
+
+
+    // grid lines
     for (int i = 0; i<height; i += 50)
        cv::line(*m_image, Point(0, i), Point(width, i), cv::Scalar(0, 0, 0));
 
