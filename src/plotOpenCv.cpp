@@ -1,0 +1,80 @@
+#include "plotOpenCv.h"
+
+
+float mapp(float x, float in_min, float in_max, float out_min, float out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+
+
+void CallBackFuncMouse(int event, int x, int y, int flags, void* userdata){
+    window * a = static_cast<window *>(userdata);
+
+    if  ( event == EVENT_LBUTTONDOWN )
+    {
+        a->hello();
+        cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+    }
+    else if  ( event == EVENT_RBUTTONDOWN )
+    {
+        cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+    }
+    else if  ( event == EVENT_MBUTTONDOWN )
+    {
+        cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+    }
+    else if ( event == EVENT_MOUSEMOVE )
+    {
+        cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
+    }
+}
+
+window::window(string name, int width, int height){
+    namedWindow(name,1);
+    m_nameGraph=name;
+    m_image = std::make_unique<cv::Mat>(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
+    m_width = width;
+    m_heigth= height;
+    //set the callback function for any mouse event
+    setMouseCallback(name, CallBackFuncMouse, this);
+}
+
+window::~window(){
+    // delete m_image;
+}
+
+void window::renderPlot(_2Dplot plot, int dt){
+
+    plot.m_out_max = m_heigth*plot.m_scale/100;
+    // offset value is different for dataset which has negative values
+    if(plot.m_in_min<0)
+    {
+        plot.m_offsetY = m_heigth/2 - plot.m_out_max/2;
+    }
+    else
+        plot.m_offsetY=0;
+
+    Point pCurrent;
+    Point pPrev;
+    int t = 0;
+
+    // Line drawn using 8 connected
+    for(int i = 1; i<plot.m_points->size() ; ++i)
+    {
+        pPrev.x=t;
+        pPrev.y = (mapp(plot.m_points->at(i-1),plot.m_in_min,plot.m_in_max,plot.m_out_max,plot.m_out_min)+plot.m_offsetY );
+        t+=dt;
+        pCurrent.x=t;
+        pCurrent.y=(mapp(plot.m_points->at(i),plot.m_in_min,plot.m_in_max,plot.m_out_max,plot.m_out_min)+plot.m_offsetY );
+
+        line(*m_image,pPrev ,pCurrent, Scalar(255, 120, 255),
+             plot.m_thickness, LINE_8);
+    }
+}
+
+void window::graphShow(){
+    // Show our image inside window
+    imshow(m_nameGraph, *m_image);
+}
+
+
