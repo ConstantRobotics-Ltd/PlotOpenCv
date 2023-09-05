@@ -7,7 +7,7 @@ using namespace cr::utils;
 
 
 
-// Linear mapping method.
+// Linear interpolation method.
 float map(float x, float in_min, float in_max, float out_min, float out_max) 
 {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
@@ -93,7 +93,7 @@ void window::renderPlot(std::vector<float>* Points, int dt, cv::Scalar color, in
     _2Dplot plot(Points);
 
     // Update current plot params with respect to current window
-    plot.m_outMax = m_heigth*plot.m_scale/100;
+    plot.m_outMax = m_heigth * (plot.m_scale/100);
 
     // offset value is different for dataset which has negative values
     if(plot.m_inMin<0)
@@ -109,16 +109,51 @@ void window::renderPlot(std::vector<float>* Points, int dt, cv::Scalar color, in
     int t = 0;
 
     // Lines between points
-    for(int i = 1; i<plot.m_points->size() ; ++i)
+    for(int i = 1; i<plot.m_points1d->size() ; ++i)
     {
         // line between two points
         previousPoint.x=t;
-        previousPoint.y = (::map(plot.m_points->at(i - 1), plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
+        previousPoint.y = (::map(plot.m_points1d->at(i - 1), plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
         t+=dt;
         currentPoint.x=t;
-        currentPoint.y=(::map(plot.m_points->at(i),plot.m_inMin,plot.m_inMax,plot.m_outMax,plot.m_outMin) + plot.m_offsetY );
+        currentPoint.y=(::map(plot.m_points1d->at(i),plot.m_inMin,plot.m_inMax,plot.m_outMax,plot.m_outMin) + plot.m_offsetY );
 
         cv::line(*m_image,previousPoint ,currentPoint,color,tickness, cv::LINE_8);
+    }
+}
+
+void window::renderPlot(std::vector<std::vector<float>> *Points,
+    cv::Scalar color, int tickness) 
+{
+    // Temp plot object to render graph on image.
+    _2Dplot plot(Points);
+
+    // Update current plot params with respect to current window
+    plot.m_outMax = m_heigth * (plot.m_scale / 100);
+
+    // offset value is different for dataset which has negative values
+    if (plot.m_inMin < 0)
+    {
+        plot.m_offsetY = m_heigth / 2 - plot.m_outMax / 2;
+    }
+
+    // Temporary points to draw a line
+    cv::Point currentPoint;
+    cv::Point previousPoint;
+
+    // Time period in x axis
+    int t = 0;
+
+    // Lines between points
+    for (int i = 1; i < plot.m_points2d->size(); ++i)
+    {
+        // line between two points
+        previousPoint.x = (*plot.m_points2d)[i-1][0];
+        previousPoint.y = (*plot.m_points2d)[i - 1][1];
+        currentPoint.x = (*plot.m_points2d)[i][0];
+        currentPoint.y = (*plot.m_points2d)[i][1];
+
+        cv::line(*m_image, previousPoint, currentPoint, color, tickness, cv::LINE_8);
     }
 }
 

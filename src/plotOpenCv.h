@@ -37,18 +37,27 @@ public:
     ~window();
 
     /**
-        * @brief Method to render plots on window.
-        * @param Points vector of points for plot.
-        * @param dt period of x axis for plotting.
-        * @param color printing color of plot.
-        * @param tickness line tickness for plot
-        */
+    * @brief Method to render plots on window.
+    * @param Points vector of points for plot.
+    * @param dt period of x axis for plotting.
+    * @param color printing color of plot.
+    * @param tickness line tickness for plot
+    */
     void renderPlot(std::vector<float>* Points, int dt = 1,
         cv::Scalar color = cv::Scalar(0,0,0), int tickness = 1);
 
     /**
-        * @brief Method to show window.
-        */
+    * @brief Method to render plots on window.
+    * @param Points 2d vector of points for plot.
+    * @param color printing color of plot.
+    * @param tickness line tickness for plot
+    */
+    void renderPlot(std::vector<std::vector<float>> *Points,
+        cv::Scalar color = cv::Scalar(0, 0, 0), int tickness = 1);
+
+    /**
+    * @brief Method to show window.
+    */
     void show();
 
 private:
@@ -64,7 +73,14 @@ private:
         {
             m_inMax = *max_element(Points->begin(), Points->end());
             m_inMin = *min_element(Points->begin(), Points->end());
-            m_points = Points;
+            m_points1d = Points;
+        }
+
+        _2Dplot(std::vector<std::vector<float>>* Points)
+        {
+            //m_inMax = *max_element(Points->begin(), Points->end());
+           // m_inMin = *min_element(Points->begin(), Points->end());
+            m_points2d = Points;
         }
 
         ~_2Dplot()
@@ -78,7 +94,8 @@ private:
         float m_outMax;
         float m_outMin{0};
         int m_offsetY{0};
-        std::vector<float>* m_points;
+        std::vector<float> *m_points1d; // for constant dx
+        std::vector<std::vector<float>>* m_points2d;
 
     private:
 

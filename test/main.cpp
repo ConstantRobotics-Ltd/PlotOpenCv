@@ -28,7 +28,7 @@ int main()
         degree+=0.5;
     }
 
-    window myWindow("Test",1280,720);
+    window myWindow("Test graph",1280,720);
     myWindow.renderPlot(&linePoints,1, cv::Scalar(255,0,0), 5);
     myWindow.renderPlot(&linePoints2,1, cv::Scalar(0, 255, 0),1);
     myWindow.show();
