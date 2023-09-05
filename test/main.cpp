@@ -1,12 +1,10 @@
 #include <iostream>
-#include <opencv4/opencv2/opencv.hpp>
-#include <opencv4/opencv2/highgui/highgui.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
 #include <vector>
-#include <algorithm>
 #include "plotOpenCv.h"
 
-using namespace cv;
-using namespace std;
+
 
 int main()
 {
@@ -26,14 +24,12 @@ int main()
         degree+=0.5;
     }
 
-    _2Dplot myPlot(&linePoints);
-    _2Dplot myPlot2(&linePoints2);
 
     window myWindow("Test",1280,720);
-    myWindow.renderPlot(myPlot2,1,PlotColor::BLUE,5);
-    myWindow.renderPlot(myPlot,1,PlotColor::RED,1);
-    myWindow.graphShow();
-    waitKey(0);
+    myWindow.renderPlot(&linePoints,1,plotColor::BLUE,5);
+    myWindow.renderPlot(&linePoints2,1,plotColor::RED,1);
+    myWindow.show();
+    cv::waitKey(0);
 
     return 0;
 }
