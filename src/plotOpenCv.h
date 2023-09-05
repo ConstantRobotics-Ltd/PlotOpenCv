@@ -62,8 +62,8 @@ private:
 
         _2Dplot(std::vector<float>* Points)
         {
-            m_in_max = *max_element(Points->begin(), Points->end());
-            m_in_min = *min_element(Points->begin(), Points->end());
+            m_inMax = *max_element(Points->begin(), Points->end());
+            m_inMin = *min_element(Points->begin(), Points->end());
             m_points = Points;
         }
 
@@ -72,12 +72,12 @@ private:
 
         }
 
-        float m_scale = 50;
-        float m_in_max;
-        float m_in_min;
-        float m_out_max;
-        float m_out_min = 0;
-        int m_offsetY = 0;
+        float m_scale{50};
+        float m_inMax;
+        float m_inMin;
+        float m_outMax;
+        float m_outMin{0};
+        int m_offsetY{0};
         std::vector<float>* m_points;
 
     private:

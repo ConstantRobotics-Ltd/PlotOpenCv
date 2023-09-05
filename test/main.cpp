@@ -8,6 +8,10 @@ using namespace cr::utils;
 
 int main()
 {
+    std::cout << "===========================================" << std::endl;
+    std::cout << "plotOpenCv test"                             << std::endl;
+    std::cout << "===========================================" << std::endl;
+
     std::vector<float> linePoints(9000);
     float degree=0;
     for(int i =0 ; i < 9000; i++ )
@@ -23,7 +27,6 @@ int main()
         linePoints2.at(i) = degree*degree;
         degree+=0.5;
     }
-
 
     window myWindow("Test",1280,720);
     myWindow.renderPlot(&linePoints,1, cv::Scalar(255,0,0), 5);

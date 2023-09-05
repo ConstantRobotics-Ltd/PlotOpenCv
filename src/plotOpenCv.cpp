@@ -93,16 +93,12 @@ void window::renderPlot(std::vector<float>* Points, int dt, cv::Scalar color, in
     _2Dplot plot(Points);
 
     // Update current plot params with respect to current window
-    plot.m_out_max = m_heigth*plot.m_scale/100;
+    plot.m_outMax = m_heigth*plot.m_scale/100;
 
     // offset value is different for dataset which has negative values
-    if(plot.m_in_min<0)
+    if(plot.m_inMin<0)
     {
-        plot.m_offsetY = m_heigth/2 - plot.m_out_max/2;
-    }
-    else 
-    {
-        plot.m_offsetY = 0;
+        plot.m_offsetY = m_heigth/2 - plot.m_outMax/2;
     }
 
     // Temporary points to draw a line
@@ -117,10 +113,10 @@ void window::renderPlot(std::vector<float>* Points, int dt, cv::Scalar color, in
     {
         // line between two points
         previousPoint.x=t;
-        previousPoint.y = (::map(plot.m_points->at(i - 1), plot.m_in_min, plot.m_in_max, plot.m_out_max, plot.m_out_min) + plot.m_offsetY);
+        previousPoint.y = (::map(plot.m_points->at(i - 1), plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
         t+=dt;
         currentPoint.x=t;
-        currentPoint.y=(::map(plot.m_points->at(i),plot.m_in_min,plot.m_in_max,plot.m_out_max,plot.m_out_min) + plot.m_offsetY );
+        currentPoint.y=(::map(plot.m_points->at(i),plot.m_inMin,plot.m_inMax,plot.m_outMax,plot.m_outMin) + plot.m_offsetY );
 
         cv::line(*m_image,previousPoint ,currentPoint,color,tickness, cv::LINE_8);
     }
