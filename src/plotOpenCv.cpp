@@ -1,11 +1,18 @@
 #include "plotOpenCv.h"
 #include "plotOpenCvVersion.h"
 
+
+
+using namespace cr::utils;
+
+
+
 // Linear mapping method.
 float map(float x, float in_min, float in_max, float out_min, float out_max) 
 {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
+
 
 
 // This method will be used for some future features like zoom in, move along x,y etc.
@@ -32,10 +39,14 @@ void CallBackFuncMouse(int event, int x, int y, int flags, void* userdata)
     }
 }
 
+
+
 std::string window::getVersion()
 {
     return PLOT_OPENCV_VERSION;
 }
+
+
 
 window::window(std::string name, int width, int height)
 {
@@ -67,12 +78,16 @@ window::window(std::string name, int width, int height)
        cv::line(*m_image, cv::Point(i, 0), cv::Point(i, height), cv::Scalar(0, 0, 0));
 }
 
+
+
 window::~window()
 {
     delete m_image;
 }
 
-void window::renderPlot(std::vector<float>* Points, int dt, plotColor color, int tickness)
+
+
+void window::renderPlot(std::vector<float>* Points, int dt, cv::Scalar color, int tickness)
 {
     // Temp plot object to render graph on image.
     _2Dplot plot(Points);
@@ -93,32 +108,6 @@ void window::renderPlot(std::vector<float>* Points, int dt, plotColor color, int
     // Temporary points to draw a line
     cv::Point currentPoint;
     cv::Point previousPoint;
-    cv::Scalar lineColor;
-
-    switch (color)
-    {
-    case plotColor::BLUE:
-    {
-        lineColor.val[0] = 255;
-        lineColor.val[1] = 0;
-        lineColor.val[2] = 0;
-        break;
-    }
-    case plotColor::GREEN:
-    {
-        lineColor.val[0] = 0;
-        lineColor.val[1] = 255;
-        lineColor.val[2] = 0;
-        break;
-    }
-    case plotColor::RED:
-    {
-        lineColor.val[0] = 0;
-        lineColor.val[1] = 0;
-        lineColor.val[2] = 255;
-        break;
-    }
-    }
 
     // Time period in x axis
     int t = 0;
@@ -133,13 +122,13 @@ void window::renderPlot(std::vector<float>* Points, int dt, plotColor color, int
         currentPoint.x=t;
         currentPoint.y=(::map(plot.m_points->at(i),plot.m_in_min,plot.m_in_max,plot.m_out_max,plot.m_out_min) + plot.m_offsetY );
 
-        cv::line(*m_image,previousPoint ,currentPoint,lineColor,tickness, cv::LINE_8);
+        cv::line(*m_image,previousPoint ,currentPoint,color,tickness, cv::LINE_8);
     }
 }
+
+
 
 void window::show()
 {
     cv::imshow(m_name, *m_image);
 }
-
-

@@ -4,7 +4,7 @@
 #include <vector>
 #include "plotOpenCv.h"
 
-
+using namespace cr::utils;
 
 int main()
 {
@@ -26,8 +26,8 @@ int main()
 
 
     window myWindow("Test",1280,720);
-    myWindow.renderPlot(&linePoints,1,plotColor::BLUE,5);
-    myWindow.renderPlot(&linePoints2,1,plotColor::RED,1);
+    myWindow.renderPlot(&linePoints,1, cv::Scalar(255,0,0), 5);
+    myWindow.renderPlot(&linePoints2,1, cv::Scalar(0, 255, 0),1);
     myWindow.show();
     cv::waitKey(0);
 
