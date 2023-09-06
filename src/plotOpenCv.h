@@ -3,6 +3,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 
 
@@ -11,9 +12,9 @@ namespace cr
 namespace utils
 {
 /**
-    * @brief window class.
+    * @brief plot class.
 */
-class window {
+class plot {
 public:
 
     /**
@@ -29,12 +30,12 @@ public:
     * @param width width of window.
     * @param height height of window.
     */
-    window(std::string name, int width = 1280, int height = 720);
+    plot(std::string name, int width = 1280, int height = 720, cv::Scalar color = cv::Scalar(255,255,255));
 
     /**
     * @brief Class destructor.
     */
-    ~window();
+    ~plot();
 
     /**
     * @brief Method to render plots on window.
@@ -43,8 +44,8 @@ public:
     * @param color printing color of plot.
     * @param tickness line tickness for plot
     */
-    void renderPlot(std::vector<float>* Points, int dt = 1,
-        cv::Scalar color = cv::Scalar(0,0,0), int tickness = 1);
+    void renderPlot(std::vector<float>* Points, int start = 0, int end = 0, 
+                    cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
 
     /**
     * @brief Method to render plots on window.
@@ -53,7 +54,7 @@ public:
     * @param tickness line tickness for plot
     */
     void renderPlot(std::vector<std::vector<float>> *Points,
-        cv::Scalar color = cv::Scalar(0, 0, 0), int tickness = 1);
+                    cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
 
     /**
     * @brief Method to show window.
@@ -69,17 +70,39 @@ private:
     {
     public:
 
-        _2Dplot(std::vector<float>* Points)
+        _2Dplot(std::vector<float>* Points, int start = 0, int end = 0)
         {
-            m_inMax = *max_element(Points->begin(), Points->end());
-            m_inMin = *min_element(Points->begin(), Points->end());
+            lengt = end - start;
+            if (lengt <= 0) 
+            {
+                m_inMax = *max_element(Points->begin() , Points->end());
+                m_inMin = *min_element(Points->begin(), Points->end());
+            }
+            else 
+            {
+                m_inMax = *max_element(Points->begin() + start, Points->begin() + end);
+                m_inMin = *min_element(Points->begin() + start, Points->begin() + end);
+            }
             m_points1d = Points;
         }
 
-        _2Dplot(std::vector<std::vector<float>>* Points)
+        _2Dplot(std::vector<std::vector<float>> *Points): m_inMax(std::numeric_limits<float>::lowest()),
+            m_inMin(std::numeric_limits<float>::max())
         {
-            //m_inMax = *max_element(Points->begin(), Points->end());
-           // m_inMin = *min_element(Points->begin(), Points->end());
+            // Iterate through the vector and find max and min in the second column (column index 1)
+            for (const std::vector<float>& row : *Points) 
+            {
+                if (row.size() > 1) 
+                {
+                    float value = row[1]; // Access the second column (column index 1)
+
+                    // Update maximum value using std::max
+                    m_inMax = std::max(m_inMax, value);
+
+                    // Update minimum value using std::min
+                    m_inMin = std::min(m_inMin, value);
+                }
+            }
             m_points2d = Points;
         }
 
@@ -94,7 +117,8 @@ private:
         float m_outMax;
         float m_outMin{0};
         int m_offsetY{0};
-        std::vector<float> *m_points1d; // for constant dx
+        int lengt{0};
+        std::vector<float> *m_points1d;    // for constant dx
         std::vector<std::vector<float>>* m_points2d;
 
     private:

@@ -5,10 +5,8 @@
 
 using namespace cr::utils;
 
-
-
 // Linear interpolation method.
-float map(float x, float in_min, float in_max, float out_min, float out_max) 
+float map(float x, float in_min, float in_max, float out_min, float out_max)
 {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
@@ -19,36 +17,35 @@ float map(float x, float in_min, float in_max, float out_min, float out_max)
 void CallBackFuncMouse(int event, int x, int y, int flags, void* userdata)
 {
     // window which event is captured.
-    window * current_window = static_cast<window *>(userdata);
+    plot* current_window = static_cast<plot*>(userdata);
 
-    if  ( event == cv::EVENT_LBUTTONDOWN )
+    if (event == cv::EVENT_LBUTTONDOWN)
     {
-       // cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+        // cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
     }
-    else if  ( event == cv::EVENT_RBUTTONDOWN )
+    else if (event == cv::EVENT_RBUTTONDOWN)
     {
         //cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
     }
-    else if  ( event == cv::EVENT_MBUTTONDOWN )
+    else if (event == cv::EVENT_MBUTTONDOWN)
     {
-       // cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+        // cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
     }
-    else if ( event == cv::EVENT_MOUSEMOVE )
+    else if (event == cv::EVENT_MOUSEMOVE)
     {
-       // cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
+        // cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
     }
 }
 
 
-
-std::string window::getVersion()
+std::string plot::getVersion()
 {
     return PLOT_OPENCV_VERSION;
 }
 
 
 
-window::window(std::string name, int width, int height)
+plot::plot(std::string name, int width, int height, cv::Scalar color)
 {
     // Create a window.
     cv::namedWindow(name,0);
@@ -57,7 +54,7 @@ window::window(std::string name, int width, int height)
     m_name=name;
 
     // background image (white) for window
-    m_image = new cv::Mat(height, width, CV_8UC3, cv::Scalar(255, 255, 255));
+    m_image = new cv::Mat(height, width, CV_8UC3, color);
 
     // remember window size
     m_width = width;
@@ -80,17 +77,17 @@ window::window(std::string name, int width, int height)
 
 
 
-window::~window()
+plot::~plot()
 {
     delete m_image;
 }
 
 
 
-void window::renderPlot(std::vector<float>* Points, int dt, cv::Scalar color, int tickness)
+void plot::renderPlot(std::vector<float>* Points, int start, int end, cv::Scalar color, int tickness)
 {
     // Temp plot object to render graph on image.
-    _2Dplot plot(Points);
+    _2Dplot plot(Points,start,end);
 
     // Update current plot params with respect to current window
     plot.m_outMax = m_heigth * (plot.m_scale/100);
@@ -100,29 +97,51 @@ void window::renderPlot(std::vector<float>* Points, int dt, cv::Scalar color, in
     {
         plot.m_offsetY = m_heigth/2 - plot.m_outMax/2;
     }
+    float dt = 0.0f;
+    // fit signal into window.
+    if ((end - start) > 0)
+        dt = (float)m_width / (float)plot.lengt;
+    else
+        dt = (float)m_width / (float)(Points->size());
 
     // Temporary points to draw a line
     cv::Point currentPoint;
     cv::Point previousPoint;
 
     // Time period in x axis
-    int t = 0;
-
-    // Lines between points
-    for(int i = 1; i<plot.m_points1d->size() ; ++i)
+    float t = 0;
+    if ((end - start) > 0) {
+        // Lines between points
+        for (int i = start + 1; i < end; ++i)
+        {
+            // line between two points
+            previousPoint.x = t;
+            previousPoint.y = (::map(plot.m_points1d->at(i - 1), plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
+            t += dt;
+            currentPoint.x = t;
+            currentPoint.y = (::map(plot.m_points1d->at(i), plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
+            //std::cout << "y : " << currentPoint.y << std::endl;
+            cv::line(*m_image, previousPoint, currentPoint, color, tickness, cv::LINE_8);
+        }
+    }
+    else 
     {
-        // line between two points
-        previousPoint.x=t;
-        previousPoint.y = (::map(plot.m_points1d->at(i - 1), plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
-        t+=dt;
-        currentPoint.x=t;
-        currentPoint.y=(::map(plot.m_points1d->at(i),plot.m_inMin,plot.m_inMax,plot.m_outMax,plot.m_outMin) + plot.m_offsetY );
+        // Lines between points
+        for (int i = 1; i < Points->size(); ++i)
+        {
+            // line between two points
+            previousPoint.x = t;
+            previousPoint.y = (::map(plot.m_points1d->at(i - 1), plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
+            t += dt;
+            currentPoint.x = t;
+            currentPoint.y = (::map(plot.m_points1d->at(i), plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
 
-        cv::line(*m_image,previousPoint ,currentPoint,color,tickness, cv::LINE_8);
+            cv::line(*m_image, previousPoint, currentPoint, color, tickness, cv::LINE_8);
+        }
     }
 }
 
-void window::renderPlot(std::vector<std::vector<float>> *Points,
+void plot::renderPlot(std::vector<std::vector<float>> *Points,
     cv::Scalar color, int tickness) 
 {
     // Temp plot object to render graph on image.
@@ -149,17 +168,16 @@ void window::renderPlot(std::vector<std::vector<float>> *Points,
     {
         // line between two points
         previousPoint.x = (*plot.m_points2d)[i-1][0];
-        previousPoint.y = (*plot.m_points2d)[i - 1][1];
+        previousPoint.y = (::map((*plot.m_points2d)[i - 1][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
         currentPoint.x = (*plot.m_points2d)[i][0];
-        currentPoint.y = (*plot.m_points2d)[i][1];
-
+        currentPoint.y = (::map((*plot.m_points2d)[i][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
         cv::line(*m_image, previousPoint, currentPoint, color, tickness, cv::LINE_8);
     }
 }
 
 
 
-void window::show()
+void plot::show()
 {
     cv::imshow(m_name, *m_image);
 }
