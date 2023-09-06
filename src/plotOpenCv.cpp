@@ -100,7 +100,7 @@ void plot::renderPlot(std::vector<float>* Points, int start, int end, cv::Scalar
     float dt = 0.0f;
     // fit signal into window.
     if ((end - start) > 0)
-        dt = (float)m_width / (float)plot.lengt;
+        dt = (float)m_width / (float)(end-start);
     else
         dt = (float)m_width / (float)(Points->size());
 
@@ -141,7 +141,7 @@ void plot::renderPlot(std::vector<float>* Points, int start, int end, cv::Scalar
     }
 }
 
-void plot::renderPlot(std::vector<std::vector<float>> *Points,
+void plot::renderPlot(std::vector<std::vector<float>> *Points, int start, int end,
     cv::Scalar color, int tickness) 
 {
     // Temp plot object to render graph on image.
@@ -156,6 +156,13 @@ void plot::renderPlot(std::vector<std::vector<float>> *Points,
         plot.m_offsetY = m_heigth / 2 - plot.m_outMax / 2;
     }
 
+    float dt = 0.0f;
+    // fit signal into window.
+    if ((end - start) > 0)
+        dt = (float)m_width / (float)(end-start);
+    else
+        dt = (float)m_width / (float)(Points->size());
+
     // Temporary points to draw a line
     cv::Point currentPoint;
     cv::Point previousPoint;
@@ -167,9 +174,9 @@ void plot::renderPlot(std::vector<std::vector<float>> *Points,
     for (int i = 1; i < plot.m_points2d->size(); ++i)
     {
         // line between two points
-        previousPoint.x = (*plot.m_points2d)[i-1][0];
+        previousPoint.x = (*plot.m_points2d)[i-1][0] * dt;
         previousPoint.y = (::map((*plot.m_points2d)[i - 1][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
-        currentPoint.x = (*plot.m_points2d)[i][0];
+        currentPoint.x = (*plot.m_points2d)[i][0] * dt;
         currentPoint.y = (::map((*plot.m_points2d)[i][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
         cv::line(*m_image, previousPoint, currentPoint, color, tickness, cv::LINE_8);
     }

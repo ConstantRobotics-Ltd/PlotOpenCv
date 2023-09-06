@@ -53,7 +53,7 @@ public:
     * @param color printing color of plot.
     * @param tickness line tickness for plot
     */
-    void renderPlot(std::vector<std::vector<float>> *Points,
+    void renderPlot(std::vector<std::vector<float>> *Points, int start = 0, int end =0,
                     cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
 
     /**
@@ -72,8 +72,7 @@ private:
 
         _2Dplot(std::vector<float>* Points, int start = 0, int end = 0)
         {
-            lengt = end - start;
-            if (lengt <= 0) 
+            if ((end - start) <= 0)
             {
                 m_inMax = *max_element(Points->begin() , Points->end());
                 m_inMin = *min_element(Points->begin(), Points->end());
@@ -117,7 +116,6 @@ private:
         float m_outMax;
         float m_outMin{0};
         int m_offsetY{0};
-        int lengt{0};
         std::vector<float> *m_points1d;    // for constant dx
         std::vector<std::vector<float>>* m_points2d;
 

@@ -29,10 +29,7 @@ int main()
         temp += 0.00015f;
         linePoints.at(i) = 0.3f - temp;
     }
-    for (int i = 0; i < 9000; i++)
-    {
-        std::cout << "data [" << i << "]" << linePoints.at(i) << std::endl;
-    }
+
     std::vector<float> linePoints2(1000);
     degree=0;
     for(int i =0 ; i < 1000; i++ )
@@ -44,8 +41,7 @@ int main()
     myWindow.renderPlot(&linePoints,0, 9000, cv::Scalar(255,0,0), 5);
     myWindow.renderPlot(&linePoints2,0,0, cv::Scalar(0, 255, 0),1);
 
-    const int numElements = 1280;
-
+    const int numElements = 9000;
     // Create a multidimensional vector to store the data (2D in this case)
     std::vector<std::vector<float>> data(numElements, std::vector<float>(2));
 
@@ -58,7 +54,7 @@ int main()
         time += 1;
     }
 
-    myWindow.renderPlot(&data, cv::Scalar(0,0,255), 3);
+    myWindow.renderPlot(&data,0,0, cv::Scalar(0,0,255), 3);
     myWindow.show();
     cv::waitKey(0);
     return 0;
