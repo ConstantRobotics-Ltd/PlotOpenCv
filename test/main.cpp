@@ -12,6 +12,8 @@ int main()
     std::cout << "plotOpenCv test"                             << std::endl;
     std::cout << "===========================================" << std::endl;
 
+    plot graph("Test graph", 1280, 720, cv::Scalar(50, 50, 50));
+
     std::vector<float> linePoints(9000);
     float degree=0;
     for(int i =0 ; i < 5000; i++ )
@@ -37,25 +39,24 @@ int main()
         linePoints2.at(i) = degree*degree;
         degree+=0.5;
     }
-    plot myWindow("Test graph",1280,720, cv::Scalar(50, 50, 50));
-    myWindow.renderPlot(&linePoints,0, 9000, cv::Scalar(255,0,0), 5);
-    myWindow.renderPlot(&linePoints2,0,0, cv::Scalar(0, 255, 0),1);
+    graph.renderPlot(&linePoints, 0, 50, cv::Scalar(255,0,0), 5);
+    graph.renderPlot(&linePoints2, 0, 0, cv::Scalar(0, 255, 0), 1);
 
     const int numElements = 9000;
     // Create a multidimensional vector to store the data (2D in this case)
     std::vector<std::vector<float>> data(numElements, std::vector<float>(2));
 
     // Generate the data for sin wave and store it in the vector
-    int time = 0;
+    int time = -1000;
     for (int i = 0; i < numElements; ++i) 
     {
         data[i][0] = time;
         data[i][1] = sin(2.0 * 3.14 * 10 * time);
         time += 1;
     }
+    graph.renderPlot(&data,0,1000, cv::Scalar(0,0,255), 3);
 
-    myWindow.renderPlot(&data,0,0, cv::Scalar(0,0,255), 3);
-    myWindow.show();
+    graph.show();
     cv::waitKey(0);
     return 0;
 }

@@ -145,7 +145,7 @@ void plot::renderPlot(std::vector<std::vector<float>> *Points, int start, int en
     cv::Scalar color, int tickness) 
 {
     // Temp plot object to render graph on image.
-    _2Dplot plot(Points);
+    _2Dplot plot(Points,start,end);
 
     // Update current plot params with respect to current window
     plot.m_outMax = m_heigth * (plot.m_scale / 100);
@@ -174,9 +174,9 @@ void plot::renderPlot(std::vector<std::vector<float>> *Points, int start, int en
     for (int i = 1; i < plot.m_points2d->size(); ++i)
     {
         // line between two points
-        previousPoint.x = (*plot.m_points2d)[i-1][0] * dt;
+        previousPoint.x = ((*plot.m_points2d)[i-1][0] - plot.m_offsetX) * dt;
         previousPoint.y = (::map((*plot.m_points2d)[i - 1][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
-        currentPoint.x = (*plot.m_points2d)[i][0] * dt;
+        currentPoint.x = ((*plot.m_points2d)[i][0] - plot.m_offsetX) * dt ;
         currentPoint.y = (::map((*plot.m_points2d)[i][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
         cv::line(*m_image, previousPoint, currentPoint, color, tickness, cv::LINE_8);
     }

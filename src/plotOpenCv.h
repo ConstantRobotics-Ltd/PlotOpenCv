@@ -79,29 +79,59 @@ private:
             }
             else 
             {
-                m_inMax = *max_element(Points->begin() + start, Points->begin() + end);
-                m_inMin = *min_element(Points->begin() + start, Points->begin() + end);
+                m_inMax = *max_element(Points->begin() , Points->end() );
+                m_inMin = *min_element(Points->begin() , Points->end() );
             }
             m_points1d = Points;
         }
 
-        _2Dplot(std::vector<std::vector<float>> *Points): m_inMax(std::numeric_limits<float>::lowest()),
-            m_inMin(std::numeric_limits<float>::max())
+        _2Dplot(std::vector<std::vector<float>> *Points, int start = 0, int end = 0): m_inMax(std::numeric_limits<float>::lowest()),
+            m_inMin(std::numeric_limits<float>::max()), m_offsetX(std::numeric_limits<float>::max())
         {
-            // Iterate through the vector and find max and min in the second column (column index 1)
-            for (const std::vector<float>& row : *Points) 
-            {
-                if (row.size() > 1) 
-                {
-                    float value = row[1]; // Access the second column (column index 1)
+            if ((end - start) > 0) {
+                // Iterate through the vector within the specified range
+                for (int i = start; i < end && i < Points->size(); ++i) {
+                    const std::vector<float>& row = (*Points)[i];
 
-                    // Update maximum value using std::max
-                    m_inMax = std::max(m_inMax, value);
+                    if (row.size() > 1) {
+                        float valueY = row[1]; // Access the second column (column index 1)
+                        float valueX = row[0];
 
-                    // Update minimum value using std::min
-                    m_inMin = std::min(m_inMin, value);
+                        // Update maximum value using std::max
+                        m_inMax = std::max(m_inMax, valueY);
+
+                        // Update minimum value using std::min
+                        m_inMin = std::min(m_inMin, valueY);
+
+                        // Find the smallest value in X direction
+                        m_offsetX = std::min(m_offsetX, valueX);
+                    }
                 }
             }
+            else 
+            {
+                // Iterate through the vector within the specified range
+                for (int i = 0;  i < Points->size(); ++i) {
+                    const std::vector<float>& row = (*Points)[i];
+
+                    if (row.size() > 1) {
+                        float valueY = row[1]; // Access the second column (column index 1)
+                        float valueX = row[0];
+
+                        // Update maximum value using std::max
+                        m_inMax = std::max(m_inMax, valueY);
+
+                        // Update minimum value using std::min
+                        m_inMin = std::min(m_inMin, valueY);
+
+                        // Find the smallest value in X direction
+                        m_offsetX = std::min(m_offsetX, valueX);
+                    }
+                }
+            }
+            if (m_offsetX > 0)
+                m_offsetX = 0;
+
             m_points2d = Points;
         }
 
@@ -116,6 +146,7 @@ private:
         float m_outMax;
         float m_outMin{0};
         int m_offsetY{0};
+        float m_offsetX;
         std::vector<float> *m_points1d;    // for constant dx
         std::vector<std::vector<float>>* m_points2d;
 
