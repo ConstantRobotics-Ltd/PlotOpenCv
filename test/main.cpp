@@ -39,7 +39,7 @@ int main()
         linePoints2.at(i) = degree*degree;
         degree+=0.5;
     }
-    graph.renderPlot(&linePoints, 0, 50, cv::Scalar(255,0,0), 5);
+    graph.renderPlot(&linePoints, 0, 625, cv::Scalar(255,0,0), 5);
     graph.renderPlot(&linePoints2, 0, 0, cv::Scalar(0, 255, 0), 1);
 
     const int numElements = 9000;
