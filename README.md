@@ -192,6 +192,14 @@ void clean();
     cv::waitKey(0);
 ```
 
+# Example Charts
+
+![example_1](_static/example_1.png)
+![example_2](_static/example_2.png)
+![example_3](_static/example_3.png)
+![example_combined](_static/example_combined.png)
+
+
 # Build and connect to your project
 
 Typical commands to build **plotOpenCv** library:
