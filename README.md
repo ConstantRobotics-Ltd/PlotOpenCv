@@ -16,7 +16,8 @@
   - [Class declaration](#class-declaration)
   - [addPlot (1D) method](#addplot-for-1d-dataset-method)
   - [addPlot (2D) method](#addplot-for-2d-dataset-method)
-  - [show method](#show-method)
+  - [clean method](#show-method)
+  - [show method](#clean-method)
 
 - [Example](#example)
 - [Build and connect to your project](#build-and-connect-to-your-project)
@@ -90,6 +91,10 @@ public:
     void addPlot(std::vector<std::vector<float>> &Points, int id, int start = 0, int end = 0,
                 cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
     /**
+    * @brief Method to clean window.
+    */
+    void clean();
+    /**
     * @brief Method to show window.
     */
     void show();
@@ -162,6 +167,14 @@ void addPlot(std::vector<std::vector<float>> &Points, int id, int start = 0, int
 
 ```cpp
 void show();
+```
+
+## clean method
+
+**clean()** method is responsible for cleaning a window containing all the plotted line charts. Method declaration:
+
+```cpp
+void clean();
 ```
 
 # Example
