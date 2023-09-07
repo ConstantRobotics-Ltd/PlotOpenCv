@@ -167,6 +167,24 @@ void plot::addPlot(std::vector<std::vector<float>>& Points, int id, int start, i
 
 }
 
+void plot::clean() 
+{
+    // Clean window
+    m_image->setTo(m_color);
+
+    //draw horizontal scale line
+    cv::line(*m_image, cv::Point(0, m_height / 2), cv::Point(m_width, m_height / 2), cv::Scalar(0, 128, 128), 5);
+
+    // draw grid lines
+    for (int i = 0; i < m_height; i += 50)
+        cv::line(*m_image, cv::Point(0, i), cv::Point(m_width, i), cv::Scalar(0, 0, 0));
+
+    for (int i = 0; i < m_width; i += 50)
+        cv::line(*m_image, cv::Point(i, 0), cv::Point(i, m_height), cv::Scalar(0, 0, 0));
+
+    m_plots.clear();
+    m_ids.clear();
+}
 
 
 void plot::show()

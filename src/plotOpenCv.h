@@ -59,6 +59,11 @@ public:
                 cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
 
     /**
+    * @brief Method to clean window.
+    */
+    void clean();
+
+    /**
     * @brief Method to show window.
     */
     void show();
