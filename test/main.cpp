@@ -44,8 +44,8 @@ int main()
     }
 
     // Put charts on graph.
-    graph.addPlot(linePoints,0, 0, 0, cv::Scalar(255,0,0), 5);
-    graph.addPlot(linePoints2,2, 0, 0, cv::Scalar(0, 255, 0), 1);
+    graph.addPlot(linePoints,0, 0, 0, cv::Scalar(255,0,0), 1);
+    graph.addPlot(linePoints2,1, 0, 0, cv::Scalar(0, 255, 0), 1);
 
     // Prepare 2d vector for plotting.
     std::vector<std::vector<float>> linePoints3(9000, std::vector<float>(2));
@@ -60,7 +60,7 @@ int main()
     }
 
     // Put chart on graph.
-    graph.addPlot(linePoints3, 3, 0, 9000, cv::Scalar(0,0,255), 3);
+    graph.addPlot(linePoints3, 2, 0, 5000, cv::Scalar(0,0,255), 2);
 
     // Show graph and wait.
     graph.show();
