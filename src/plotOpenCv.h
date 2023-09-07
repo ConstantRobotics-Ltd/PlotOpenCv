@@ -39,10 +39,10 @@ public:
     * @brief Method to render plots on window.
     * @param Points  vector of points for plot.
     * @param id ploting id.
-    * @param start beggining index for plotting
-    * @param end ending index for plotting
+    * @param start beggining index for plotting.
+    * @param end ending index for plotting.
     * @param color printing color of plot.
-    * @param tickness line tickness for plot
+    * @param tickness line tickness for plot.
     */
     void addPlot(std::vector<float>& Points, int id, int start = 0, int end = 0,
                 cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
@@ -50,8 +50,8 @@ public:
     * @brief Method to render plots on window.
     * @param Points  2D vector of points for plot.
     * @param id ploting id.
-    * @param start beggining index for plotting
-    * @param end ending index for plotting
+    * @param start beggining index for plotting.
+    * @param end ending index for plotting.
     * @param color printing color of plot.
     * @param tickness line tickness for plot
     */
@@ -92,11 +92,11 @@ private:
             // Copy specified range of input vector.
             else 
             {
-                // Define the range you want to copy
+                // Define the range you want to copy.
                 std::vector<float>::iterator startindex = Points.begin() + start; // Start from index
                 std::vector<float>::iterator endindex = Points.begin() + end;   // End at index
 
-                // Copy the range from sourceVector to destinationVector
+                // Copy the range from sourceVector to destinationVector.
                 std::copy(startindex, endindex, std::back_inserter(m_points1d));
             }
 
@@ -104,7 +104,7 @@ private:
             m_inMax = *max_element(Points.begin() , Points.end());
             m_inMin = *min_element(Points.begin(), Points.end());
 
-            // Update params
+            // Update params.
             m_id = id;
             m_color = color;
             m_tickness = tickness;
@@ -130,8 +130,8 @@ private:
             else
             {
                 // Range of copy
-                std::vector<std::vector<float>>::iterator startindex = Points.begin() + start; // Start from index
-                std::vector<std::vector<float>>::iterator endindex = Points.begin() + end;   // End at index
+                std::vector<std::vector<float>>::iterator startindex = Points.begin() + start;
+                std::vector<std::vector<float>>::iterator endindex = Points.begin() + end;
 
                 // Copy the range from sourceVector to destinationVector
                 std::copy(startindex, endindex, std::back_inserter(m_points2d));
