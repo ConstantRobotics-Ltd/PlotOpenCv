@@ -170,6 +170,20 @@ void addPlot(std::vector<std::vector<T>> &points, int id, int start = 0, int end
 | color     | Color of chart line. |
 | tickness  | Tickness of chart line.|
 
+
+
+**Table 2** - Supported data types.
+
+| Supported data types |
+| ---------| 
+| unsigned char |
+| char |
+| unsigned int |
+| unsigned short |
+| short int |
+| int |
+| float |
+| double |
 ## show method
 
 **show()** method is responsible for displaying a window containing all the plotted line charts. Method declaration:
