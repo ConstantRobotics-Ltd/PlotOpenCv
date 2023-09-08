@@ -48,9 +48,9 @@ namespace cr
 namespace utils
 {
 /**
-    * @brief plot class.
+    * @brief Plot class.
 */
-class plot {
+class Plot {
 public:
     /**
     * @brief Method to get string of current library version.
@@ -62,34 +62,43 @@ public:
     * @param name window name.
     * @param width width of window.
     * @param height height of window.
+    * @param backgroundColor color of background.
+    * @param scaleLineColor color of horizontal scale line.
     */
-    plot(std::string name, int width = 1280, int height = 720, cv::Scalar color = cv::Scalar(255,255,255));
+    Plot(std::string name, int width = 1280, int height = 720, 
+         cv::Scalar backgroundColor = cv::Scalar(255, 255, 255),
+         cv::Scalar scaleLineColor = cv::Scalar(0, 128, 128));
     /**
     * @brief Class destructor.
     */
-    ~plot();
+    ~Plot();
     /**
     * @brief Method to render plots on window.
-    * @param Points  vector of points for plot.
-    * @param id ploting id.
-    * @param start beggining index for plotting
-    * @param end ending index for plotting
+    * @param points  vector of points for plot.
+    * @param id ploting id for a line chart, can be used to update existing plot 
+             or add new one.
+    * @param start beginning index for plotting in given vector.
+    * @param end ending index for plotting in given vector.
     * @param color printing color of plot.
-    * @param tickness line tickness for plot
+    * @param thickness line tickness for plot.
     */
-    void addPlot(std::vector<float> &Points, int id, int start = 0, int end = 0,
-                cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
+    template <typename T>
+    void addPlot(std::vector<T>& points, int id, int start = 0, int end = 0,
+                cv::Scalar color = cv::Scalar(255, 255, 255), int thickness = 1);
     /**
     * @brief Method to render plots on window.
-    * @param Points  2D vector of points for plot.
-    * @param id ploting id.
-    * @param start beggining index for plotting
-    * @param end ending index for plotting
+    * @param points 2D vector of points for plot.
+    * @param id ploting id for a line chart, can be used to update existing plot
+             or add new one.
+    * @param start beginning index for plotting in given vector.
+    * @param end ending index for plotting in given vector.
     * @param color printing color of plot.
-    * @param tickness line tickness for plot
+    * @param thickness line tickness for plot
     */
-    void addPlot(std::vector<std::vector<float>> &Points, int id, int start = 0, int end = 0,
-                cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
+    template <typename T>
+    void addPlot(std::vector<std::vector<T>>& points, int id, 
+                int start = 0, int end = 0,
+                cv::Scalar color = cv::Scalar(255, 255, 255), int thickness = 1);
     /**
     * @brief Method to clean window.
     */
@@ -130,8 +139,8 @@ plotOpenCv class version: 1.0.0
 **addPlot(...)** method serves the purpose of incorporating a new line chart into the existing window. It either introduces a new plot if the provided id is not yet present, or updates an existing plot associated with the given identifier. Method declaration:
 
 ```cpp
-void addPlot(std::vector<float> &Points, int id, int start = 0, int end = 0,
-            cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
+void addPlot(std::vector<T> &points, int id, int start = 0, int end = 0,
+            cv::Scalar color = cv::Scalar(255, 255, 255), int thickness = 1);
 ```
 
 | Parameter | Value                                                        |
@@ -141,15 +150,15 @@ void addPlot(std::vector<float> &Points, int id, int start = 0, int end = 0,
 | start     | Start index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset.|
 | end       | End index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset. |
 | color     | Color of chart line. |
-| tickness  | Tickness of chart line.|
+| thickness  | Thickness of chart line.|
 
 ## addPlot (for 2D dataset) method
 
 **addPlot(...)** method serves the purpose of incorporating a new line chart into the existing window. It either introduces a new plot if the provided id is not yet present, or updates an existing plot associated with the given identifier. Method declaration:
 
 ```cpp
-void addPlot(std::vector<std::vector<float>> &Points, int id, int start = 0, int end = 0,
-            cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
+void addPlot(std::vector<std::vector<T>> &points, int id, int start = 0, int end = 0,
+            cv::Scalar color = cv::Scalar(255, 255, 255), int thickness = 1);
 ```
 
 | Parameter | Value                                                        |
@@ -180,7 +189,7 @@ void clean();
 # Example
 
 ```cpp
-    plot graph("Test graph", 1280, 720, cv::Scalar(50, 50, 50));
+    plot graph("Test graph", 1280, 720,cv::Scalar(0, 128, 128) cv::Scalar(50, 50, 50));
 
     std::vector<float> linePoints(9000);
     std::vector<std::vector<float>> linePoints2(5000, std::vector<float>(2));

@@ -1,8 +1,8 @@
 #pragma once
-#include <opencv2/opencv.hpp>
-#include <opencv2/highgui/highgui.hpp>
 #include <vector>
 #include <string>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 
 
@@ -13,7 +13,7 @@ namespace utils
 /**
     * @brief plot class.
 */
-class plot {
+class Plot {
 public:
 
     /**
@@ -27,36 +27,45 @@ public:
     * @param name window name.
     * @param width width of window.
     * @param height height of window.
+    * @param backgroundColor color of background.
+    * @param scaleLineColor color of horizontal scale line.
     */
-    plot(std::string name, int width = 1280, int height = 720, cv::Scalar color = cv::Scalar(255,255,255));
+    Plot(std::string name, int width = 1280, int height = 720, 
+         cv::Scalar backgroundColor = cv::Scalar(255, 255, 255),
+         cv::Scalar scaleLineColor = cv::Scalar(0, 128, 128));
 
     /**
     * @brief Class destructor.
     */
-    ~plot();
+    ~Plot();
 
     /**
     * @brief Method to render plots on window.
     * @param Points  vector of points for plot.
-    * @param id ploting id.
-    * @param start beggining index for plotting.
-    * @param end ending index for plotting.
+    * @param id ploting id for a line chart, can be used to update existing plot 
+             or add new one.
+    * @param start beginning index for plotting in given vector.
+    * @param end ending index for plotting in given vector.
     * @param color printing color of plot.
-    * @param tickness line tickness for plot.
+    * @param thickness line thickness for plot.
     */
-    void addPlot(std::vector<float>& Points, int id, int start = 0, int end = 0,
-                cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
+    template <typename T>
+    void addPlot(std::vector<T>& points, int id, int start = 0, int end = 0,
+                cv::Scalar color = cv::Scalar(255, 255, 255), int thickness = 1);
     /**
     * @brief Method to render plots on window.
     * @param Points  2D vector of points for plot.
-    * @param id ploting id.
-    * @param start beggining index for plotting.
-    * @param end ending index for plotting.
+    * @param id ploting id for a line chart, can be used to update existing plot
+             or add new one.
+    * @param start beginning index for plotting in given vector.
+    * @param end ending index for plotting in given vector.
     * @param color printing color of plot.
-    * @param tickness line tickness for plot
+    * @param thickness line thickness for plot
     */
-    void addPlot(std::vector<std::vector<float>>& Points, int id, int start = 0, int end = 0,
-                cv::Scalar color = cv::Scalar(255, 255, 255), int tickness = 1);
+    template <typename T>
+    void addPlot(std::vector<std::vector<T>>& points, int id, 
+                int start = 0, int end = 0,
+                cv::Scalar color = cv::Scalar(255, 255, 255), int thickness = 1);
 
     /**
     * @brief Method to clean window.
@@ -73,127 +82,52 @@ private:
     /**
     * @brief plot struct.
     */
-    struct _2Dplot
+    struct Plot2D
     {
-    public:
         /**
         * @brief struct constructor.
         */
-        _2Dplot(std::vector<float>& Points, int id, int start, int end, cv::Scalar color, int tickness )
-        {
-            m_length = end - start;
-
-            //Invalid range, use complete vector.
-            if (m_length <= 0)
-            {
-                m_length = Points.size();
-                std::copy(Points.begin(), Points.end(), std::back_inserter(m_points1d));
-            }
-            // Copy specified range of input vector.
-            else 
-            {
-                // Define the range you want to copy.
-                std::vector<float>::iterator startindex = Points.begin() + start; // Start from index
-                std::vector<float>::iterator endindex = Points.begin() + end;   // End at index
-
-                // Copy the range from sourceVector to destinationVector.
-                std::copy(startindex, endindex, std::back_inserter(m_points1d));
-            }
-
-            // Max and min values are required for vertical scaling.
-            m_inMax = *max_element(Points.begin() , Points.end());
-            m_inMin = *min_element(Points.begin(), Points.end());
-
-            // Update params.
-            m_id = id;
-            m_color = color;
-            m_tickness = tickness;
-            m_type = 0;
-        }
+        Plot2D(std::vector<double>& points, int id, 
+               int start, int end, cv::Scalar color, int tickness);
 
         /**
         * @brief struct constructor.
         */
-        _2Dplot(std::vector<std::vector<float>> &Points, int id, int start , int end,
-            cv::Scalar color, int tickness): m_inMax(std::numeric_limits<float>::lowest()),
-            m_inMin(std::numeric_limits<float>::max()), m_offsetX(std::numeric_limits<float>::max())
-        {
-            m_length = end - start;
-
-            // Invalid range, use complete vector.
-            if (m_length <= 0)
-            {
-                m_length = Points.size();
-                std::copy(Points.begin(), Points.end(), std::back_inserter(m_points2d));
-            }
-            // Copy specified range of input vector.
-            else
-            {
-                // Range of copy
-                std::vector<std::vector<float>>::iterator startindex = Points.begin() + start;
-                std::vector<std::vector<float>>::iterator endindex = Points.begin() + end;
-
-                // Copy the range from sourceVector to destinationVector
-                std::copy(startindex, endindex, std::back_inserter(m_points2d));
-            };
-
-            // Iterate through the vector within the specified range
-            for (int i = start; i < end && i < Points.size(); ++i) {
-                const std::vector<float>& row = Points[i];
-
-                if (row.size() > 1) {
-                    float valueY = row[1]; // y component
-                    float valueX = row[0]; // x component
-
-                    // Update maximum value using std::max
-                    m_inMax = std::max(m_inMax, valueY);
-
-                    // Update minimum value using std::min
-                    m_inMin = std::min(m_inMin, valueY);
-
-                    // Find the smallest value in X direction for horizontal offset.
-                    m_offsetX = std::min(m_offsetX, valueX);
-                }
-            }
-
-            // Update params
-            m_id = id;
-            m_tickness = tickness;
-            m_color = color;
-            m_type = 1;
-        }
+        Plot2D(std::vector<std::vector<double>>& points, int id, 
+               int start, int end,
+               cv::Scalar color, int tickness);
 
         /**
         * @brief Class destructor.
         */
-        ~_2Dplot(){}
+        ~Plot2D();
 
         /// Id of plot.
         int m_id{0};
         /// Max value from data set.
-        float m_inMax;
+        double m_inMax;
         /// Min value from data set.
-        float m_inMin;
+        double m_inMin;
         /// Max value for scaling.
-        float m_outMax;
+        double m_outMax;
         /// Min value for scaling.
-        float m_outMin{0};
+        double m_outMin{0};
         /// Vertical offset.
         int m_offsetY{0};
         /// Horizontal offset.
-        float m_offsetX;
+        double m_offsetX;
         /// Color of plot.
         cv::Scalar m_color;
         /// Tickness of plot line.
         int m_tickness;
-        /// Plot type (0 - one dimentional (without horizontal points), 1 - two dimentional).
+        /// Plot type(0 - one dimentional (only vertical), 1 - two dimentional).
         int m_type;
         /// Number of points on plot.
         int m_length;
         /// Dataset for one dimentional plot.
-        std::vector<float> m_points1d;
+        std::vector<double> m_points1D;
         /// Dataset for two dimentional plot.
-        std::vector<std::vector<float>> m_points2d;
+        std::vector<std::vector<double>> m_points2D;
 
     private:
     };
@@ -207,11 +141,13 @@ private:
     /// Window heigth
     int m_height;
     /// Color of background
-    cv::Scalar m_color;
+    cv::Scalar m_backgroundColor;
+    /// Color of horizontal scale line
+    cv::Scalar m_horizontalScaleLineColor;
     /// Window name
     std::string m_name;
     /// List of plots
-    std::list<_2Dplot> m_plots;
+    std::list<Plot2D> m_plots;
     /// List of ids
     std::vector<int> m_ids;
 
@@ -219,8 +155,7 @@ private:
     * @brief Method to render a plot on window.
     * @param plot object to draw.
     */
-    void renderPlot(_2Dplot plot);
-
+    void renderPlot(Plot2D plot);
 };
 }
 }
