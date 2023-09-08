@@ -33,7 +33,7 @@
 
 | Version | Release date | What's new                                                   |
 | ------- | ------------ | ------------------------------------------------------------ |
-| 1.0.0   | 07.09.2023   | First version.                                               |
+| 1.0.0   | 08.09.2023   | First version.                                               |
 
 
 # plot class description
