@@ -1,7 +1,7 @@
 
 ![logo](_static/plot_opencv_logo.png)
 
-# **plotOpenCv interface C++ library**
+# **plotOpenCv C++ library**
 
 **v1.0.0**
 
@@ -136,7 +136,7 @@ void addPlot(std::vector<float> &Points, int id, int start = 0, int end = 0,
 
 | Parameter | Value                                                        |
 | --------- | ------------------------------------------------------------ |
-| Points    | One dimentional vector which includes vertical points.Vector format : {y1, y2, ...}  |
+| Points    | One dimentional vector which includes vertical points.Vector format : {y1, y2, ... }  |
 | id        | Identifier for chart on a window. Provides user to update a chart or add new one.  |
 | start     | Start index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset.|
 | end       | End index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset. |
@@ -154,7 +154,7 @@ void addPlot(std::vector<std::vector<float>> &Points, int id, int start = 0, int
 
 | Parameter | Value                                                        |
 | --------- | ------------------------------------------------------------ |
-| Points    | Two dimentional vector which includes vertical and horizontal points. Vector format : {{x1,y1}, {x2,y2}, ...} |
+| Points    | Two dimentional vector which includes vertical and horizontal points. Vector format : {{x1,y1}, {x2,y2}, ... } |
 | id        | Identifier for chart on a window. Provides user to update a chart or add new one.  |
 | start     | Start index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset.|
 | end       | End index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset. |
