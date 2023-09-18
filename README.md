@@ -132,7 +132,7 @@ std::cout << "plotOpenCv class version: " << plotOpenCv::getVersion() << std::en
 Console output:
 
 ```bash
-plotOpenCv class version: 1.0.0
+plotOpenCv class version: 1.0.1
 ```
 
 ## addPlot (for 1D dataset) method
