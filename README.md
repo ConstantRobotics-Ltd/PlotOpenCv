@@ -3,7 +3,7 @@
 
 # **plotOpenCv C++ library**
 
-**v1.0.0**
+**v1.0.1**
 
 ------
 
@@ -34,6 +34,7 @@
 | Version | Release date | What's new                                                   |
 | ------- | ------------ | ------------------------------------------------------------ |
 | 1.0.0   | 08.09.2023   | First version.                                               |
+| 1.0.1   | 18.09.2023   | Update used container for plots.                             |
 
 
 # plot class description
