@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <map>
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
@@ -146,10 +147,8 @@ private:
     cv::Scalar m_horizontalScaleLineColor;
     /// Window name
     std::string m_name;
-    /// List of plots
-    std::list<Plot2D> m_plots;
-    /// List of ids
-    std::vector<int> m_ids;
+    // Create a std::map to store Plot2D instances with integer IDs
+    std::map<int, Plot2D> m_plots;
 
     /**
     * @brief Method to render a plot on window.
