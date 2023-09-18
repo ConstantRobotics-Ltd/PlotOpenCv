@@ -93,7 +93,7 @@ void cr::utils::Plot::renderPlot(Plot2D plot)
                 plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
 
             cv::line(*m_image, previousPoint, currentPoint, plot.m_color,
- plot.m_tickness, cv::LINE_8);
+                    plot.m_tickness, cv::LINE_8);
         }
     }
     // 2D vector drawing.
@@ -117,30 +117,26 @@ void cr::utils::Plot::renderPlot(Plot2D plot)
      cv::Scalar color, int thickness) 
  {
      // Check if id is already contained.
-     for (const int& i : m_ids)
+     for (const auto& pair : m_plots)
      {
+         const int& i = pair.first;
          if (i == id)
          {
              // Remove plot from list.
-             std::list<Plot2D>::iterator it = m_plots.begin();
-             std::advance(it, id);
-             m_plots.erase(it);
- 
-             // Remove id from list.
-             auto removeIndex = std::remove(m_ids.begin(), m_ids.end(), id);
-             m_ids.erase(removeIndex, m_ids.end());
+             auto it = m_plots.find(i);
+             if (it != m_plots.end()) 
+                 m_plots.erase(it);
          }
      }
- 
-     m_ids.push_back(id);
- 
+
      // Add ploting object to list.
      std::vector<double> doubles;
      for (int i =0;i<points.size(); i++)
      {
          doubles.push_back(static_cast<double>(points[i]));
      }
-     m_plots.emplace_back(Plot2D(doubles, id, start, end, color, thickness));
+
+     m_plots.insert(std::make_pair(id, Plot2D(doubles, id, start, end, color, thickness)));
  
  }
  
@@ -149,22 +145,17 @@ void cr::utils::Plot::renderPlot(Plot2D plot)
     cv::Scalar color, int thickness)
 {
     // Check if id is already contained.
-    for (const int& i : m_ids)
+    for (const auto& pair : m_plots)
     {
+        const int& i = pair.first;
         if (i == id)
         {
             // Remove plot from list.
-            std::list<Plot2D>::iterator it = m_plots.begin();
-            std::advance(it, id);
-            m_plots.erase(it);
-
-            // Remove id from list.
-            auto removeIndex = std::remove(m_ids.begin(), m_ids.end(), id);
-            m_ids.erase(removeIndex, m_ids.end());
+            auto it = m_plots.find(i);
+            if (it != m_plots.end())
+                m_plots.erase(it);
         }
     }
-
-    m_ids.push_back(id);
 
     // Convert points vector to double.
     std::vector<std::vector<double>> doubles;
@@ -178,7 +169,7 @@ void cr::utils::Plot::renderPlot(Plot2D plot)
     }
 
     // Add ploting object to list.
-    m_plots.emplace_back(Plot2D(doubles, id, start, end, color, thickness));
+    m_plots.insert(std::make_pair(id, Plot2D(doubles, id, start, end, color, thickness)));
 
 }
 
@@ -200,8 +191,8 @@ void cr::utils::Plot::clean()
         cv::line(*m_image, cv::Point(i, 0), 
                 cv::Point(i, m_height), cv::Scalar(0, 0, 0));
 
+    // Clear all instances from container.
     m_plots.clear();
-    m_ids.clear();
 }
 
 void cr::utils::Plot::show()
@@ -225,9 +216,10 @@ void cr::utils::Plot::show()
                  cv::Point(i, m_height), cv::Scalar(0, 0, 0));
     }
 
-    // Draw plot objects on window.
-    for (const Plot2D& plot : m_plots)
+    // Iterate over the values (Plot2D instances) in the map
+    for (const auto& pair : m_plots) 
     {
+        const Plot2D& plot = pair.second;
         renderPlot(plot);
     }
 
