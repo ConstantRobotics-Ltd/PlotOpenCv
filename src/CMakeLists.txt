@@ -6,7 +6,9 @@ cmake_minimum_required(VERSION 3.13)
 ## LIBRARY-PROJECT
 ## name and version
 ###############################################################################
-project(plotOpenCv VERSION 1.0.1 LANGUAGES CXX)
+project(plotOpenCv VERSION 1.0.2 LANGUAGES CXX)
+
+
 
 ###############################################################################
 ## SETTINGS
@@ -25,6 +27,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${BINARY_DIR}/lib")
 file (GLOB_RECURSE IN_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.h.in)
 configure_file(${IN_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}Version.h)
 
+
+
 ###############################################################################
 ## TARGET
 ## create target and add include path
@@ -40,6 +44,7 @@ if (NOT TARGET ${PROJECT_NAME})
     add_library(${PROJECT_NAME} STATIC ${SOURCES})
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
 
 
 ###############################################################################

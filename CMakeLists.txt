@@ -1,10 +1,14 @@
 cmake_minimum_required(VERSION 3.13)
 
+
+
 ################################################################################
 ## PROJECT
 ## name and version
 ################################################################################
 project(plotOpenCV LANGUAGES CXX)
+
+
 
 ################################################################################
 ## SETTINGS
@@ -25,8 +29,8 @@ endif()
 ## CONFIGURATION
 ## project configuration
 ################################################################################
-SET(${PARENT}_PLOT_OPENCV              ON  CACHE BOOL "" ${REWRITE_FORCE})
-SET(${PARENT}_PLOT_OPENCV_TEST         ON  CACHE BOOL "" ${REWRITE_FORCE})
+SET(${PARENT}_PLOT_OPENCV                    ON  CACHE BOOL "" ${REWRITE_FORCE})
+SET(${PARENT}_PLOT_OPENCV_TEST               ON  CACHE BOOL "" ${REWRITE_FORCE})
 
 
 
@@ -34,7 +38,6 @@ SET(${PARENT}_PLOT_OPENCV_TEST         ON  CACHE BOOL "" ${REWRITE_FORCE})
 ## INCLUDING SUBDIRECTORIES
 ## Adding subdirectories according to the project configuration
 ################################################################################
-
 if (${PARENT}_PLOT_OPENCV)
     add_subdirectory(src)
 endif()

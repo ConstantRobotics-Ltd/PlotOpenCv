@@ -3,24 +3,26 @@
 
 
 
-
-// Linear interpolation method.
 template <typename T>
 T map(T x, T in_min, T in_max, T out_min, T out_max)
 {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+
+
 std::string cr::utils::Plot::getVersion()
 {
     return PLOT_OPENCV_VERSION;
 }
 
+
+
 cr::utils::Plot::Plot(std::string name, int width, int height, 
             cv::Scalar backgroundColor, cv::Scalar scaleLineColor)
 {
     // Create a window.
-    cv::namedWindow(name, 0);
+    cv::namedWindow(name, cv::WINDOW_AUTOSIZE);
 
     // Background image (white) for window.
     m_image = new cv::Mat(height, width, CV_8UC3, backgroundColor);
@@ -34,25 +36,29 @@ cr::utils::Plot::Plot(std::string name, int width, int height,
 
     //Draw horizontal scale line.
     cv::line(*m_image, cv::Point(0, height / 2),
-        cv::Point(width, height / 2), m_horizontalScaleLineColor, 5);
+        cv::Point(width, height / 2), m_horizontalScaleLineColor, 5, cv::LINE_AA);
 
     // Draw grid lines.
     for (int i = 0; i < height; i += 50)
     {
         cv::line(*m_image, cv::Point(0, i),
-            cv::Point(width, i), cv::Scalar(0, 0, 0));
+            cv::Point(width, i), cv::Scalar(0, 0, 0), 1, cv::LINE_AA);
     }
     for (int i = 0; i < width; i += 50) 
     {
         cv::line(*m_image, cv::Point(i, 0), 
-                 cv::Point(i, height), cv::Scalar(0, 0, 0));
+                 cv::Point(i, height), cv::Scalar(0, 0, 0), 1, cv::LINE_AA);
     }
 }
+
+
 
 cr::utils::Plot::~Plot()
 {
     delete m_image;
 }
+
+
 
 void cr::utils::Plot::renderPlot(Plot2D plot)
 {
@@ -93,7 +99,7 @@ void cr::utils::Plot::renderPlot(Plot2D plot)
                 plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
 
             cv::line(*m_image, previousPoint, currentPoint, plot.m_color,
-                    plot.m_tickness, cv::LINE_8);
+                    plot.m_tickness, cv::LINE_AA);
         }
     }
     // 2D vector drawing.
@@ -107,36 +113,38 @@ void cr::utils::Plot::renderPlot(Plot2D plot)
             previousPoint.y = (::map((plot.m_points2D)[i - 1][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
             currentPoint.x = ((plot.m_points2D)[i][0] - plot.m_offsetX) * dt;
             currentPoint.y = (::map((plot.m_points2D)[i][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
-            cv::line(*m_image, previousPoint, currentPoint, plot.m_color, plot.m_tickness, cv::LINE_8);
+            cv::line(*m_image, previousPoint, currentPoint, plot.m_color, plot.m_tickness, cv::LINE_AA);
         }
     }
 }
 
- template <typename T>
- void cr::utils::Plot::addPlot(std::vector<T>& points, int id, int start, int end,
+
+
+template <typename T>
+void cr::utils::Plot::addPlot(std::vector<T>& points, int id, int start, int end,
      cv::Scalar color, int thickness) 
- {
+{
      // Check if id is already contained.
-     for (const auto& pair : m_plots)
-     {
-         const int& i = pair.first;
-         if (i == id)
-         {
-             // Remove plot from list.
-             auto it = m_plots.find(i);
-             if (it != m_plots.end()) 
-                 m_plots.erase(it);
-         }
-     }
+    for (const auto& pair : m_plots)
+    {
+        const int& i = pair.first;
+        if (i == id)
+        {
+            // Remove plot from list.
+            auto it = m_plots.find(i);
+            if (it != m_plots.end()) 
+                m_plots.erase(it);
+        }
+    }
 
-     // Add ploting object to list.
-     std::vector<double> doubles;
-     for (int i =0;i<points.size(); i++)
-     {
-         doubles.push_back(static_cast<double>(points[i]));
-     }
+    // Add ploting object to list.
+    std::vector<double> doubles;
+    for (int i =0;i<points.size(); i++)
+    {
+        doubles.push_back(static_cast<double>(points[i]));
+    }
 
-     m_plots.insert(std::make_pair(id, Plot2D(doubles, id, start, end, color, thickness)));
+    m_plots.insert(std::make_pair(id, Plot2D(doubles, id, start, end, color, thickness)));
  
  }
  
@@ -180,16 +188,16 @@ void cr::utils::Plot::clean()
 
     // Draw horizontal scale line.
     cv::line(*m_image, cv::Point(0, m_height / 2),
-            cv::Point(m_width, m_height / 2), m_horizontalScaleLineColor, 3);
+            cv::Point(m_width, m_height / 2), m_horizontalScaleLineColor, 3, cv::LINE_AA);
 
     // Draw grid lines.
     for (int i = 0; i < m_height; i += 50)
         cv::line(*m_image, cv::Point(0, i), 
-                cv::Point(m_width, i), cv::Scalar(0, 0, 0));
+                cv::Point(m_width, i), cv::Scalar(0, 0, 0), 1, cv::LINE_AA);
 
     for (int i = 0; i < m_width; i += 50)
         cv::line(*m_image, cv::Point(i, 0), 
-                cv::Point(i, m_height), cv::Scalar(0, 0, 0));
+                cv::Point(i, m_height), cv::Scalar(0, 0, 0), 1, cv::LINE_AA);
 
     // Clear all instances from container.
     m_plots.clear();
@@ -202,18 +210,18 @@ void cr::utils::Plot::show()
 
     // Draw horizontal scale line.
     cv::line(*m_image, cv::Point(0, m_height / 2), 
-            cv::Point(m_width, m_height / 2), m_horizontalScaleLineColor, 3);
+            cv::Point(m_width, m_height / 2), m_horizontalScaleLineColor, 3, cv::LINE_AA);
 
     // Draw grid lines.
     for (int i = 0; i < m_height; i += 50)
     {
         cv::line(*m_image, cv::Point(0, i), 
-                 cv::Point(m_width, i), cv::Scalar(0, 0, 0));
+                 cv::Point(m_width, i), cv::Scalar(0, 0, 0), 1, cv::LINE_AA);
     }
     for (int i = 0; i < m_width; i += 50) 
     {
         cv::line(*m_image, cv::Point(i, 0), 
-                 cv::Point(i, m_height), cv::Scalar(0, 0, 0));
+                 cv::Point(i, m_height), cv::Scalar(0, 0, 0), 1, cv::LINE_AA);
     }
 
     // Iterate over the values (Plot2D instances) in the map

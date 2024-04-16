@@ -8,20 +8,18 @@ using namespace cr::utils;
 
 int main()
 {
-    std::cout << "==========================================="   << std::endl;
-    //std::cout << "plotOpenCv v" << plot<float>::getVersion() << " test" << std::endl;
-    std::cout << "==========================================="   << std::endl;
+    std::cout << "plotOpenCv v" << Plot::getVersion() << " test" << std::endl;
 
     // Create plotting window.
-    Plot graph("Test graph", 1280, 720, cv::Scalar(50, 50, 50));
+    Plot graph("Test graph", 1280, 640, cv::Scalar(50, 50, 50));
 
     // Prepare 1d vector for plotting.
     std::vector<double> linePoints(9000);
-    double degree=0;
+    double degree = 0.0;
     for(int i =0 ; i < 5000; i++ )
     {
         linePoints.at(i) = sin(degree);
-        degree+=0.01;
+        degree += 0.01;
     }
     for (int i = 5000; i < 7000; i++)
     {
@@ -39,8 +37,8 @@ int main()
     degree=0;
     for(int i =0 ; i < 1000; i++ )
     {
-        linePoints2.at(i) = degree*degree;
-        degree+=0.5;
+        linePoints2.at(i) = degree * degree;
+        degree += 0.5;
     }
 
     std::vector<int> linePoints3(1000);
@@ -51,8 +49,8 @@ int main()
     }
 
     // Put charts on graph.
-    graph.addPlot(linePoints,0, 0, 0, cv::Scalar(255,0,0), 1);
-    graph.addPlot(linePoints2,1, 0, 0, cv::Scalar(0, 255, 0), 1);
+    graph.addPlot(linePoints, 0, 0, 0, cv::Scalar(255, 0, 0), 1);
+    graph.addPlot(linePoints2, 1, 0, 0, cv::Scalar(0, 255, 0), 1);
     graph.addPlot(linePoints3, 2, 0, 0, cv::Scalar(0, 0, 255), 1);
 
     // Prepare 2d vector for plotting.
@@ -68,7 +66,7 @@ int main()
     }
 
     // Put chart on graph.
-    graph.addPlot(linePoints4, 3, 0, 5000, cv::Scalar(0,0,255), 2);
+    graph.addPlot(linePoints4, 3, 0, 5000, cv::Scalar(0, 0, 255), 2);
 
     // Show graph and wait.
     graph.show();

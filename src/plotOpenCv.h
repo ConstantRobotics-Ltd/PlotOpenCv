@@ -12,14 +12,15 @@ namespace cr
 namespace utils
 {
 /**
-    * @brief plot class.
-*/
-class Plot {
+ * @brief plot class.
+ */
+class Plot
+{
 public:
 
     /**
-    * @brief Method to get string of current library version.
-    * @return String of current library version.
+    * @brief Get string of current library version.
+    * @return String of current library version in format "Major.Minor.Patch".
     */
     static std::string getVersion();
 
@@ -41,7 +42,7 @@ public:
     ~Plot();
 
     /**
-    * @brief Method to render plots on window.
+    * @brief Render plots on window.
     * @param Points  vector of points for plot.
     * @param id ploting id for a line chart, can be used to update existing plot 
              or add new one.

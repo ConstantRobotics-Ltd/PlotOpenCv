@@ -1,31 +1,35 @@
 
-![logo](_static/plot_opencv_logo.png)
+![plot_opencv_logo](_static/plot_opencv_logo.png)
+
+
 
 # **plotOpenCv C++ library**
 
-**v1.0.1**
+**v1.0.2**
 
-------
 
 
 # Table of contents
 
 - [Overview](#overview)
 - [Versions](#versions)
+- [Library files](#library-files)
 - [plot class description](#plot-class-description)
   - [Class declaration](#class-declaration)
   - [addPlot (1D) method](#addplot-for-1d-dataset-method)
   - [addPlot (2D) method](#addplot-for-2d-dataset-method)
   - [clean method](#show-method)
   - [show method](#clean-method)
-
 - [Example](#example)
 - [Build and connect to your project](#build-and-connect-to-your-project)
 
 
+
 # Overview
 
-**plotOpenCv** is a C++ library developed to facilitate the visualization of 2-dimensional line charts. This library is built upon the OpenCV, providing users with a convenient and efficient tool for visualizing data through line charts. With plotOpenCv, users can effortlessly create multiple line charts within a single window and tune various chart parameters, such as line width, color, and more.
+**plotOpenCv** is a C++ library developed to facilitate the visualization of 2-dimensional line charts. This library is built upon the OpenCV, providing users with a convenient and efficient tool for visualizing data through line charts. With plotOpenCv, users can effortlessly create multiple line charts within a single window and tune various chart parameters, such as line width, color, and more. It uses C++17 standard. The library is licensed under the Apache 2.0 license.
+
+
 
 # Versions
 
@@ -34,90 +38,77 @@
 | Version | Release date | What's new                                                   |
 | ------- | ------------ | ------------------------------------------------------------ |
 | 1.0.0   | 08.09.2023   | First version.                                               |
-| 1.0.1   | 18.09.2023   | Update used container for plots.                             |
+| 1.0.1   | 18.09.2023   | - Update used container for plots.                           |
+| 1.0.2   | 16.04.2024   | - Antialiased line drawing implemented.<br/>- Window size issue fixed.<br/>- Documentation updated. |
 
 
-# plot class description
+
+# Library files
+
+The library is supplied only by source code. The user is given a set of files in the form of a CMake project (repository). The repository structure is shown below:
+
+```xml
+CMakeLists.txt -------------- Main CMake file of the library.
+src ------------------------- Library source code folder.
+    CMakeLists.txt ---------- CMake file of the library.
+    plotOpenCv.h ------------ Main library header file.
+    plotOpenCvVersion.h ----- Header file with library version.
+    plotOpenCvVersion.h.in -- File for CMake to generate version header.
+    plotOpenCv.cpp ---------- C++ implementation file.
+test ------------------------ Folder for test application.
+    CMakeLists.txt ---------- CMake file of test application.
+    main.cpp ---------------- Source code of test application.
+```
+
+
+
+# Plot class description
+
+
 
 ## Class declaration
 
-**plot** class declared in **plotOpenCv.h** file. Class declaration:
+**Plot** class declared in **plotOpenCv.h** file. Class declaration:
 
 ```cpp
-namespace cr
+class Plot
 {
-namespace utils
-{
-/**
-    * @brief Plot class.
-*/
-class Plot {
 public:
-    /**
-    * @brief Method to get string of current library version.
-    * @return String of current library version.
-    */
+
+    /// Get string of current library version.
     static std::string getVersion();
-    /**
-    * @brief Class constructor.
-    * @param name window name.
-    * @param width width of window.
-    * @param height height of window.
-    * @param backgroundColor color of background.
-    * @param scaleLineColor color of horizontal scale line.
-    */
+
+    /// Class constructor.
     Plot(std::string name, int width = 1280, int height = 720, 
          cv::Scalar backgroundColor = cv::Scalar(255, 255, 255),
          cv::Scalar scaleLineColor = cv::Scalar(0, 128, 128));
-    /**
-    * @brief Class destructor.
-    */
+
+    /// Class destructor.
     ~Plot();
-    /**
-    * @brief Method to render plots on window.
-    * @param points  vector of points for plot.
-    * @param id ploting id for a line chart, can be used to update existing plot 
-             or add new one.
-    * @param start beginning index for plotting in given vector.
-    * @param end ending index for plotting in given vector.
-    * @param color printing color of plot.
-    * @param thickness line tickness for plot.
-    */
+
+    /// Render plots on window.
     template <typename T>
     void addPlot(std::vector<T>& points, int id, int start = 0, int end = 0,
                 cv::Scalar color = cv::Scalar(255, 255, 255), int thickness = 1);
-    /**
-    * @brief Method to render plots on window.
-    * @param points 2D vector of points for plot.
-    * @param id ploting id for a line chart, can be used to update existing plot
-             or add new one.
-    * @param start beginning index for plotting in given vector.
-    * @param end ending index for plotting in given vector.
-    * @param color printing color of plot.
-    * @param thickness line tickness for plot
-    */
+    /// Method to render plots on window.
     template <typename T>
     void addPlot(std::vector<std::vector<T>>& points, int id, 
                 int start = 0, int end = 0,
                 cv::Scalar color = cv::Scalar(255, 255, 255), int thickness = 1);
-    /**
-    * @brief Method to clean window.
-    */
+
+    /// Method to clean window.
     void clean();
-    /**
-    * @brief Method to show window.
-    */
+
+    /// Method to show window.
     void show();
 };
-}
-}
 ```
 
 
 
 ## getVersion method
 
-**getVersion()** method returns string of current version of **plotOpenCv**. Method declaration:
+The **getVersion()** method returns string of current version of **plotOpenCv**. Method declaration:
 
 ```cpp
 static std::string getVersion();
@@ -132,12 +123,14 @@ std::cout << "plotOpenCv class version: " << plotOpenCv::getVersion() << std::en
 Console output:
 
 ```bash
-plotOpenCv class version: 1.0.1
+plotOpenCv class version: 1.0.2
 ```
+
+
 
 ## addPlot (for 1D dataset) method
 
-**addPlot(...)** method serves the purpose of incorporating a new line chart into the existing window. It either introduces a new plot if the provided id is not yet present, or updates an existing plot associated with the given identifier. Method declaration:
+The **addPlot(...)** method serves the purpose of incorporating a new line chart into the existing window. It either introduces a new plot if the provided id is not yet present, or updates an existing plot associated with the given identifier. Method declaration:
 
 ```cpp
 void addPlot(std::vector<T> &points, int id, int start = 0, int end = 0,
@@ -153,9 +146,11 @@ void addPlot(std::vector<T> &points, int id, int start = 0, int end = 0,
 | color     | Color of chart line. |
 | thickness  | Thickness of chart line.|
 
+
+
 ## addPlot (for 2D dataset) method
 
-**addPlot(...)** method serves the purpose of incorporating a new line chart into the existing window. It either introduces a new plot if the provided id is not yet present, or updates an existing plot associated with the given identifier. Method declaration:
+The **addPlot(...)** method serves the purpose of incorporating a new line chart into the existing window. It either introduces a new plot if the provided id is not yet present, or updates an existing plot associated with the given identifier. Method declaration:
 
 ```cpp
 void addPlot(std::vector<std::vector<T>> &points, int id, int start = 0, int end = 0,
@@ -172,7 +167,6 @@ void addPlot(std::vector<std::vector<T>> &points, int id, int start = 0, int end
 | tickness  | Tickness of chart line.|
 
 
-
 **Table 2** - Supported data types.
 
 | Supported data types |
@@ -185,21 +179,28 @@ void addPlot(std::vector<std::vector<T>> &points, int id, int start = 0, int end
 | int |
 | float |
 | double |
+
+
+
 ## show method
 
-**show()** method is responsible for displaying a window containing all the plotted line charts. Method declaration:
+The **show()** method is responsible for displaying a window containing all the plotted line charts. Method declaration:
 
 ```cpp
 void show();
 ```
 
+
+
 ## clean method
 
-**clean()** method is responsible for cleaning a window containing all the plotted line charts. Method declaration:
+The **clean()** method is responsible for cleaning a window containing all the plotted line charts. Method declaration:
 
 ```cpp
 void clean();
 ```
+
+
 
 # Example
 
@@ -216,12 +217,15 @@ void clean();
     cv::waitKey(0);
 ```
 
+
+
 # Example Charts
 
-![example_1](_static/example_1.png)
-![example_2](_static/example_2.png)
-![example_3](_static/example_3.png)
-![example_combined](_static/example_combined.png)
+![plot_opencv_example_1](_static/plot_opencv_example_1.png)
+![plot_opencv_example_2](_static/plot_opencv_example_2.png)
+![plot_opencv_example_3](_static/plot_opencv_example_3.png)
+![plot_opencv_example_combined](_static/plot_opencv_example_combined.png)
+
 
 
 # Build and connect to your project
@@ -290,9 +294,10 @@ SET(${PARENT}_SUBMODULE_CACHE_OVERWRITE OFF CACHE BOOL "" FORCE)
 ## CONFIGURATION
 ## 3rd-party submodules configuration
 ################################################################################
-SET(${PARENT}_SUBMODULE_PLOT_OPENCV                    ON  CACHE BOOL "" FORCE)
+SET(${PARENT}_SUBMODULE_PLOT_OPENCV                     ON  CACHE BOOL "" FORCE)
 if (${PARENT}_SUBMODULE_PLOT_OPENCV)
-    SET(${PARENT}_PLOT_OPENCV                          ON  CACHE BOOL "" FORCE)
+    SET(${PARENT}_PLOT_OPENCV                           ON  CACHE BOOL "" FORCE)
+    SET(${PARENT}_PLOT_OPENCV_TEST                      OFF CACHE BOOL "" FORCE)
 endif()
 
 ################################################################################
@@ -330,4 +335,3 @@ target_link_libraries(${PROJECT_NAME} plotOpenCv)
 ```
 
 Done!
-
