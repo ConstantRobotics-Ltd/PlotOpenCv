@@ -1,11 +1,11 @@
 
-![plot_opencv_logo](_static/plot_opencv_logo.png)
+![plot_opencv_logo](./static/plot_opencv_logo.png)
 
 
 
-# **plotOpenCv C++ library**
+# **PlotOpenCv C++ library**
 
-**v1.0.2**
+**v1.0.3**
 
 
 
@@ -27,7 +27,7 @@
 
 # Overview
 
-**plotOpenCv** is a C++ library developed to facilitate the visualization of 2-dimensional line charts. This library is built upon the OpenCV, providing users with a convenient and efficient tool for visualizing data through line charts. With plotOpenCv, users can effortlessly create multiple line charts within a single window and tune various chart parameters, such as line width, color, and more. It uses C++17 standard. The library is licensed under the Apache 2.0 license.
+**plotOpenCv** is a C++ library developed to facilitate the visualization of 2-dimensional line charts. This library is built upon the OpenCV, providing users with a convenient and efficient tool for visualizing data through line charts. With **plotOpenCv**, users can effortlessly create multiple line charts within a single window and tune various chart parameters, such as line width, color, and more. It uses C++17 standard. The library is licensed under the Apache 2.0 license.
 
 
 
@@ -40,6 +40,7 @@
 | 1.0.0   | 08.09.2023   | First version.                                               |
 | 1.0.1   | 18.09.2023   | - Update used container for plots.                           |
 | 1.0.2   | 16.04.2024   | - Antialiased line drawing implemented.<br/>- Window size issue fixed.<br/>- Documentation updated. |
+| 1.0.3   | 17.05.2024   | - Documentation updated.                                     |
 
 
 
@@ -123,7 +124,7 @@ std::cout << "plotOpenCv class version: " << plotOpenCv::getVersion() << std::en
 Console output:
 
 ```bash
-plotOpenCv class version: 1.0.2
+plotOpenCv class version: 1.0.3
 ```
 
 
@@ -139,7 +140,7 @@ void addPlot(std::vector<T> &points, int id, int start = 0, int end = 0,
 
 | Parameter | Value                                                        |
 | --------- | ------------------------------------------------------------ |
-| Points    | One dimentional vector which includes vertical points.Vector format : {y1, y2, ... }  |
+| Points    | One dimensional vector which includes vertical points.Vector format : {y1, y2, ... }  |
 | id        | Identifier for chart on a window. Provides user to update a chart or add new one.  |
 | start     | Start index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset.|
 | end       | End index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset. |
@@ -159,12 +160,12 @@ void addPlot(std::vector<std::vector<T>> &points, int id, int start = 0, int end
 
 | Parameter | Value                                                        |
 | --------- | ------------------------------------------------------------ |
-| Points    | Two dimentional vector which includes vertical and horizontal points. Vector format : {{x1,y1}, {x2,y2}, ... } |
+| Points    | Two dimensional vector which includes vertical and horizontal points. Vector format : [{x1,y1}, {x2,y2}, ... ] |
 | id        | Identifier for chart on a window. Provides user to update a chart or add new one.  |
 | start     | Start index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset.|
 | end       | End index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset. |
 | color     | Color of chart line. |
-| tickness  | Tickness of chart line.|
+| thickness | Thickness of chart line.|
 
 
 **Table 2** - Supported data types.
@@ -221,10 +222,10 @@ void clean();
 
 # Example Charts
 
-![plot_opencv_example_1](_static/plot_opencv_example_1.png)
-![plot_opencv_example_2](_static/plot_opencv_example_2.png)
-![plot_opencv_example_3](_static/plot_opencv_example_3.png)
-![plot_opencv_example_combined](_static/plot_opencv_example_combined.png)
+![plot_opencv_example_1](./static/plot_opencv_example_1.png)
+![plot_opencv_example_2](./static/plot_opencv_example_2.png)
+![plot_opencv_example_3](./static/plot_opencv_example_3.png)
+![plot_opencv_example_combined](./static/plot_opencv_example_combined.png)
 
 
 

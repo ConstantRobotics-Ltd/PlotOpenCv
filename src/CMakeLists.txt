@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.13)
 ## LIBRARY-PROJECT
 ## name and version
 ###############################################################################
-project(plotOpenCv VERSION 1.0.2 LANGUAGES CXX)
+project(plotOpenCv VERSION 1.0.3 LANGUAGES CXX)
 
 
 
