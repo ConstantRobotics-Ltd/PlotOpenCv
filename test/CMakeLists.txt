@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.13)
 ## EXECUTABLE-PROJECT
 ## name and version
 ################################################################################
-project(plotOpenCvTest LANGUAGES CXX)
+project(PlotOpenCvTest LANGUAGES CXX)
 
 
 
@@ -41,10 +41,4 @@ endif()
 ## LINK LIBRARIES
 ## linking all dependencies
 ################################################################################
-
-target_link_libraries (${PROJECT_NAME} plotOpenCv)
-
-
-
-
-
+target_link_libraries (${PROJECT_NAME} PlotOpenCv)

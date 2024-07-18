@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.13)
 ## PROJECT
 ## name and version
 ################################################################################
-project(plotOpenCV LANGUAGES CXX)
+project(PlotOpenCV LANGUAGES CXX)
 
 
 
