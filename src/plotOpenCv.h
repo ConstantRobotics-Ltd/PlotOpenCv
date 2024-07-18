@@ -105,31 +105,31 @@ private:
         ~Plot2D();
 
         /// Id of plot.
-        int m_id{0};
+        int m_id{ 0 };
         /// Max value from data set.
-        double m_inMax;
+        double m_inMax{ 0.0 };
         /// Min value from data set.
-        double m_inMin;
+        double m_inMin{ 0.0 };
         /// Max value for scaling.
-        double m_outMax;
+        double m_outMax{ 0.0 };
         /// Min value for scaling.
-        double m_outMin{0};
+        double m_outMin{ 0 };
         /// Vertical offset.
-        int m_offsetY{0};
+        int m_offsetY{ 0 };
         /// Horizontal offset.
-        double m_offsetX;
+        double m_offsetX{ 0.0 };
         /// Color of plot.
         cv::Scalar m_color;
         /// Tickness of plot line.
-        int m_tickness;
+        int m_thickness{ 0 };
         /// Plot type(0 - one dimentional (only vertical), 1 - two dimentional).
-        int m_type;
+        int m_type{ 0 };
         /// Number of points on plot.
-        int m_length;
+        int m_length{ 0 };
         /// Dataset for one dimentional plot.
-        std::vector<double> m_points1D;
+        std::vector<double> m_points1D{};
         /// Dataset for two dimentional plot.
-        std::vector<std::vector<double>> m_points2D;
+        std::vector<std::vector<double>> m_points2D{};
 
     private:
     };
@@ -139,15 +139,15 @@ private:
     /// Grid sizes in pixel for plotting background 
     int m_gridSize{ 50 };
     /// Window width
-    int m_width;
+    int m_width{ 0 };
     /// Window heigth
-    int m_height;
+    int m_height{ 0 };
     /// Color of background
     cv::Scalar m_backgroundColor;
     /// Color of horizontal scale line
     cv::Scalar m_horizontalScaleLineColor;
     /// Window name
-    std::string m_name;
+    std::string m_name{ "" };
     // Create a std::map to store Plot2D instances with integer IDs
     std::map<int, Plot2D> m_plots;
 

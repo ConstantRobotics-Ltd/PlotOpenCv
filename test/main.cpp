@@ -37,7 +37,7 @@ int main()
     degree=0;
     for(int i =0 ; i < 1000; i++ )
     {
-        linePoints2.at(i) = degree * degree;
+        linePoints2.at(i) = static_cast<float>(degree * degree);
         degree += 0.5;
     }
 

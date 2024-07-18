@@ -78,7 +78,7 @@ void cr::utils::Plot::renderPlot(Plot2D plot)
     // Offset value for dataset that has negative values.
     if (plot.m_inMin < 0)
     {
-        plot.m_offsetY = plot.m_outMax - (plot.m_outMax / 2);
+        plot.m_offsetY = static_cast<int>(plot.m_outMax - (plot.m_outMax / 2));
     }
 
     // 1D vector drawing.
@@ -90,16 +90,16 @@ void cr::utils::Plot::renderPlot(Plot2D plot)
         for (int i = 1; i < plot.m_length; ++i)
         {
             // line between two points
-            previousPoint.x = t;
-            previousPoint.y = (::map(plot.m_points1D.at(i - 1), plot.m_inMin, 
+            previousPoint.x = static_cast<int>(t);
+            previousPoint.y = static_cast<int>(::map(plot.m_points1D.at(i - 1), plot.m_inMin, 
                 plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
             t += dt;
-            currentPoint.x = t;
-            currentPoint.y = (::map(plot.m_points1D.at(i), plot.m_inMin, 
+            currentPoint.x = static_cast<int>(t);
+            currentPoint.y = static_cast<int>(::map(plot.m_points1D.at(i), plot.m_inMin,
                 plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
 
             cv::line(*m_image, previousPoint, currentPoint, plot.m_color,
-                    plot.m_tickness, cv::LINE_AA);
+                    plot.m_thickness, cv::LINE_AA);
         }
     }
     // 2D vector drawing.
@@ -109,11 +109,11 @@ void cr::utils::Plot::renderPlot(Plot2D plot)
         for (int i = 1; i < plot.m_points2D.size(); ++i)
         {
             // line between two points
-            previousPoint.x = ((plot.m_points2D)[i - 1][0] - plot.m_offsetX) * dt;
-            previousPoint.y = (::map((plot.m_points2D)[i - 1][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
-            currentPoint.x = ((plot.m_points2D)[i][0] - plot.m_offsetX) * dt;
-            currentPoint.y = (::map((plot.m_points2D)[i][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
-            cv::line(*m_image, previousPoint, currentPoint, plot.m_color, plot.m_tickness, cv::LINE_AA);
+            previousPoint.x = static_cast<int>(((plot.m_points2D)[i - 1][0] - plot.m_offsetX) * dt);
+            previousPoint.y = static_cast<int>(::map((plot.m_points2D)[i - 1][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
+            currentPoint.x = static_cast<int>(((plot.m_points2D)[i][0] - plot.m_offsetX) * dt);
+            currentPoint.y = static_cast<int>(::map((plot.m_points2D)[i][1], plot.m_inMin, plot.m_inMax, plot.m_outMax, plot.m_outMin) + plot.m_offsetY);
+            cv::line(*m_image, previousPoint, currentPoint, plot.m_color, plot.m_thickness, cv::LINE_AA);
         }
     }
 }
@@ -148,6 +148,8 @@ void cr::utils::Plot::addPlot(std::vector<T>& points, int id, int start, int end
  
  }
  
+
+
  template <typename T>
  void cr::utils::Plot::addPlot(std::vector<std::vector<T>>& points, int id, int start, int end,
     cv::Scalar color, int thickness)
@@ -181,6 +183,8 @@ void cr::utils::Plot::addPlot(std::vector<T>& points, int id, int start, int end
 
 }
 
+
+
 void cr::utils::Plot::clean()
 {
     // Clean window.
@@ -202,6 +206,8 @@ void cr::utils::Plot::clean()
     // Clear all instances from container.
     m_plots.clear();
 }
+
+
 
 void cr::utils::Plot::show()
 {
@@ -234,15 +240,17 @@ void cr::utils::Plot::show()
     cv::imshow(m_name, *m_image);
 }
 
+
+
 cr::utils::Plot::Plot2D::Plot2D(std::vector<double>& points, int id,
-                     int start, int end, cv::Scalar color, int tickness)
+                     int start, int end, cv::Scalar color, int thickness)
 {
     m_length = end - start;
 
     // Invalid range, use complete vector.
     if (m_length <= 0)
     {
-        m_length = points.size();
+        m_length = static_cast<int>(points.size());
         std::copy(points.begin(), points.end(), std::back_inserter(m_points1D));
     }
     // Copy specified range of input vector.
@@ -263,12 +271,14 @@ cr::utils::Plot::Plot2D::Plot2D(std::vector<double>& points, int id,
     // Update params.
     m_id = id;
     m_color = color;
-    m_tickness = tickness;
+    m_thickness = thickness;
     m_type = 0;
 }
 
+
+
 cr::utils::Plot::Plot2D::Plot2D(std::vector<std::vector<double>>& points, int id,
-                     int start, int end, cv::Scalar color, int tickness)
+                     int start, int end, cv::Scalar color, int thickness)
 {
     m_inMax = std::numeric_limits<double>::lowest();
     m_inMin = std::numeric_limits<double>::max();
@@ -278,7 +288,7 @@ cr::utils::Plot::Plot2D::Plot2D(std::vector<std::vector<double>>& points, int id
     // Invalid range, use complete vector.
     if (m_length <= 0)
     {
-        m_length = points.size();
+        m_length = static_cast<int>(points.size());
         std::copy(points.begin(), points.end(), std::back_inserter(m_points2D));
     }
     // Copy specified range of input vector.
@@ -313,7 +323,7 @@ cr::utils::Plot::Plot2D::Plot2D(std::vector<std::vector<double>>& points, int id
 
     // Update params.
     m_id = id;
-    m_tickness = tickness;
+    m_thickness = thickness;
     m_color = color;
     m_type = 1;
 }
@@ -321,40 +331,40 @@ cr::utils::Plot::Plot2D::Plot2D(std::vector<std::vector<double>>& points, int id
 cr::utils::Plot::Plot2D::~Plot2D() {}
 
 template void cr::utils::Plot::addPlot(std::vector<float>& Points, int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector<double>& Points, int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector<int>& Points, int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector<short int>& Points, int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector<unsigned short int>& Points, int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector<unsigned int>& Points, int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector<char>& Points, int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector<unsigned char>& Points, int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 
 
 template void cr::utils::Plot::addPlot(std::vector<std::vector<float>>& Points, int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector< std::vector<double>>& Points, int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector< std::vector<int>>& Points, int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector< std::vector<short int>>& Points,int id,
-                            int start, int end, cv::Scalar color, int tickness);
+                            int start, int end, cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector< std::vector<unsigned short int>>& Points,
                             int id, int start, int end,
-                            cv::Scalar color, int tickness);
+                            cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector< std::vector<unsigned int>>& Points,
                             int id, int start, int end,
-                            cv::Scalar color, int tickness);
+                            cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector< std::vector<char>>& Points, int id,
                             int start, int end,
-                            cv::Scalar color, int tickness);
+                            cv::Scalar color, int thickness);
 template void cr::utils::Plot::addPlot(std::vector< std::vector<unsigned char>>& Points,
                             int id, int start, int end,
-                            cv::Scalar color, int tickness);
+                            cv::Scalar color, int thickness);
