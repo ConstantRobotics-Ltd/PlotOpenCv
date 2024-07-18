@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.13)
 ## LIBRARY-PROJECT
 ## name and version
 ###############################################################################
-project(plotOpenCv VERSION 1.0.3 LANGUAGES CXX)
+project(plotOpenCv VERSION 1.0.4 LANGUAGES CXX)
 
 
 
@@ -51,14 +51,5 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 ## LINK LIBRARIES
 ## linking all dependencies
 ###############################################################################
-
 find_package(OpenCV)
-include_directories(${OpenCV_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
-
-
-
-
-
-
-
