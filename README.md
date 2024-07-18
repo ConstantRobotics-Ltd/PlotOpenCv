@@ -5,7 +5,7 @@
 
 # **PlotOpenCv C++ library**
 
-**v1.0.3**
+**v1.0.4**
 
 
 
@@ -27,7 +27,7 @@
 
 # Overview
 
-**plotOpenCv** is a C++ library developed to facilitate the visualization of 2-dimensional line charts. This library is built upon the OpenCV, providing users with a convenient and efficient tool for visualizing data through line charts. With **plotOpenCv**, users can effortlessly create multiple line charts within a single window and tune various chart parameters, such as line width, color, and more. It uses C++17 standard. The library is licensed under the Apache 2.0 license.
+**PlotOpenCv** C++ library provides the visualization of 2-dimensional line charts. This library is built upon the OpenCV, providing users with a convenient and efficient tool for visualizing data through line charts. With **PlotOpenCv**, users can create multiple line charts within a single window and tune various chart parameters, such as line width, color, and more. It utilizes C++17 standard. The library is licensed under the Apache 2.0 license.
 
 
 
@@ -41,6 +41,7 @@
 | 1.0.1   | 18.09.2023   | - Update used container for plots.                           |
 | 1.0.2   | 16.04.2024   | - Antialiased line drawing implemented.<br/>- Window size issue fixed.<br/>- Documentation updated. |
 | 1.0.3   | 17.05.2024   | - Documentation updated.                                     |
+| 1.0.4   | 18.07.2024   | - CMake structure updated.                                   |
 
 
 
@@ -52,10 +53,10 @@ The library is supplied only by source code. The user is given a set of files in
 CMakeLists.txt -------------- Main CMake file of the library.
 src ------------------------- Library source code folder.
     CMakeLists.txt ---------- CMake file of the library.
-    plotOpenCv.h ------------ Main library header file.
-    plotOpenCvVersion.h ----- Header file with library version.
-    plotOpenCvVersion.h.in -- File for CMake to generate version header.
-    plotOpenCv.cpp ---------- C++ implementation file.
+    PlotOpenCv.h ------------ Main library header file.
+    PlotOpenCvVersion.h ----- Header file with library version.
+    PlotOpenCvVersion.h.in -- File for CMake to generate version header.
+    PlotOpenCv.cpp ---------- C++ implementation file.
 test ------------------------ Folder for test application.
     CMakeLists.txt ---------- CMake file of test application.
     main.cpp ---------------- Source code of test application.
@@ -69,7 +70,7 @@ test ------------------------ Folder for test application.
 
 ## Class declaration
 
-**Plot** class declared in **plotOpenCv.h** file. Class declaration:
+**Plot** class declared in **PlotOpenCv.h** file. Class declaration:
 
 ```cpp
 class Plot
@@ -109,22 +110,22 @@ public:
 
 ## getVersion method
 
-The **getVersion()** method returns string of current version of **plotOpenCv**. Method declaration:
+The **getVersion()** method returns string of current version of **PlotOpenCv**. Method declaration:
 
 ```cpp
 static std::string getVersion();
 ```
 
-Method can be used without **plotOpenCv** class instance:
+Method can be used without **PlotOpenCv** class instance:
 
 ```cpp
-std::cout << "plotOpenCv class version: " << plotOpenCv::getVersion() << std::endl;
+std::cout << "PlotOpenCv class version: " << PlotOpenCv::getVersion();
 ```
 
 Console output:
 
 ```bash
-plotOpenCv class version: 1.0.3
+PlotOpenCv class version: 1.0.4
 ```
 
 
@@ -160,13 +161,12 @@ void addPlot(std::vector<std::vector<T>> &points, int id, int start = 0, int end
 
 | Parameter | Value                                                        |
 | --------- | ------------------------------------------------------------ |
-| Points    | Two dimensional vector which includes vertical and horizontal points. Vector format : [{x1,y1}, {x2,y2}, ... ] |
-| id        | Identifier for chart on a window. Provides user to update a chart or add new one.  |
-| start     | Start index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset.|
+| Points    | Two dimensional vector which includes vertical and horizontal points. Vector format:[{x1,y1}, {x2,y2}, ... ] |
+| id        | Identifier for chart on a window. Provides user to update a chart or add new one. |
+| start     | Start index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset. |
 | end       | End index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset. |
-| color     | Color of chart line. |
-| thickness | Thickness of chart line.|
-
+| color     | Color of chart line.                                         |
+| thickness | Thickness of chart line.                                     |
 
 **Table 2** - Supported data types.
 
@@ -202,47 +202,20 @@ void clean();
 ```
 
 
-
-# Example
-
-```cpp
-    plot graph("Test graph", 1280, 720,cv::Scalar(0, 128, 128) cv::Scalar(50, 50, 50));
-
-    std::vector<float> linePoints(9000);
-    std::vector<std::vector<float>> linePoints2(5000, std::vector<float>(2));
-
-    graph.addPlot(linePoints,0, 0, 0, cv::Scalar(255,0,0), 5);
-    graph.addPlot(linePoints2,1, 0, 0, cv::Scalar(0,255,0), 2);
-
-    graph.show();
-    cv::waitKey(0);
-```
-
-
-
-# Example Charts
-
-![plot_opencv_example_1](./static/plot_opencv_example_1.png)
-![plot_opencv_example_2](./static/plot_opencv_example_2.png)
-![plot_opencv_example_3](./static/plot_opencv_example_3.png)
-![plot_opencv_example_combined](./static/plot_opencv_example_combined.png)
-
-
-
 # Build and connect to your project
 
-Typical commands to build **plotOpenCv** library:
+Typical commands to build **PlotOpenCv** library:
 
 ```bash
-git clone https://github.com/ConstantRobotics-Ltd/plotOpenCv.git
-cd plotOpenCv
+git clone https://github.com/ConstantRobotics-Ltd/PlotOpenCv.git
+cd PlotOpenCv
 mkdir build
 cd build
 cmake ..
 make
 ```
 
-If you want connect **plotOpenCv** library to your CMake project as source code you can make follow. For example, if your repository has structure:
+If you want connect **PlotOpenCv** library to your CMake project as source code you can make follow. For example, if your repository has structure:
 
 ```bash
 CMakeLists.txt
@@ -252,14 +225,14 @@ src
     yourLib.cpp
 ```
 
-You can add repository **plotOpenCv** as submodule by commands:
+You can add repository **PlotOpenCv** as submodule by commands:
 
 ```bash
 cd <your respository folder>
-git submodule add https://github.com/ConstantRobotics-Ltd/plotOpenCv.git 3rdparty/plotOpenCv
+git submodule add https://github.com/ConstantRobotics-Ltd/PlotOpenCv.git 3rdparty/PlotOpenCv
 ```
 
-In you repository folder will be created folder **3rdparty/plotOpenCv** which contains files of **plotOpenCv** repository. New structure of your repository:
+In you repository folder will be created folder **3rdparty/PlotOpenCv** which contains files of **PlotOpenCv** repository. New structure of your repository:
 
 ```bash
 CMakeLists.txt
@@ -268,7 +241,7 @@ src
     yourLib.h
     yourLib.cpp
 3rdparty
-    plotOpenCv
+    PlotOpenCv
 ```
 
 Create CMakeLists.txt file in **3rdparty** folder. CMakeLists.txt should contain:
@@ -306,11 +279,11 @@ endif()
 ## Adding subdirectories according to the 3rd-party configuration
 ################################################################################
 if (${PARENT}_SUBMODULE_PLOT_OPENCV)
-    add_subdirectory(plotOpenCv)
+    add_subdirectory(PlotOpenCv)
 endif()
 ```
 
-File **3rdparty/CMakeLists.txt** adds folder **plotOpenCv** to your project. Your repository new structure will be:
+File **3rdparty/CMakeLists.txt** adds folder **PlotOpenCv** to your project and excludes test applications from compiling (by default test applications and example excluded from compiling if **PlotOpenCv** included as sub-repository).The new structure of your repository:
 
 ```bash
 CMakeLists.txt
@@ -320,7 +293,7 @@ src
     yourLib.cpp
 3rdparty
     CMakeLists.txt
-    plotOpenCv
+    PlotOpenCv
 ```
 
 Next you need include folder 3rdparty in main **CMakeLists.txt** file of your repository. Add string at the end of your main **CMakeLists.txt**:
@@ -329,10 +302,47 @@ Next you need include folder 3rdparty in main **CMakeLists.txt** file of your re
 add_subdirectory(3rdparty)
 ```
 
-Next you have to include plotOpenCv library in your **src/CMakeLists.txt** file:
+Next you have to include PlotOpenCv library in your **src/CMakeLists.txt** file:
 
 ```cmake
-target_link_libraries(${PROJECT_NAME} plotOpenCv)
+target_link_libraries(${PROJECT_NAME} PlotOpenCv)
 ```
 
 Done!
+
+# Example
+
+The example demonstrates how to use **PlotOpenCv** library. 
+
+```cpp
+#include <vector>
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
+#include "PlotOpenCv.h"
+
+int main()
+{    
+	plot graph("Test graph", 1280, 720,cv::Scalar(0, 128, 128) cv::Scalar(50, 50, 50));
+
+    std::vector<float> linePoints(9000);
+    std::vector<std::vector<float>> linePoints2(5000, std::vector<float>(2));
+
+    graph.addPlot(linePoints,0, 0, 0, cv::Scalar(255,0,0), 5);
+    graph.addPlot(linePoints2,1, 0, 0, cv::Scalar(0,255,0), 2);
+
+    graph.show();
+    cv::waitKey(0);
+    return 0;
+}
+```
+
+
+
+# Example Charts
+
+Example charts shows what visual effects user should expect depending on input data.
+
+![plot_opencv_example_1](./static/plot_opencv_example_1.png)
+![plot_opencv_example_2](./static/plot_opencv_example_2.png)
+![plot_opencv_example_3](./static/plot_opencv_example_3.png)
+![plot_opencv_example_combined](./static/plot_opencv_example_combined.png)
