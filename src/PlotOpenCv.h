@@ -130,8 +130,6 @@ private:
         std::vector<double> m_points1D{};
         /// Dataset for two dimentional plot.
         std::vector<std::vector<double>> m_points2D{};
-
-    private:
     };
 
     /// Background image for plotting.

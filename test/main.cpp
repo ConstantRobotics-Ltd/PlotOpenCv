@@ -2,7 +2,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui.hpp>
 #include <vector>
-#include "plotOpenCv.h"
+#include "PlotOpenCv.h"
 
 using namespace cr::utils;
 

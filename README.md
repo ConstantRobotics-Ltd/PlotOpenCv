@@ -5,7 +5,7 @@
 
 # **PlotOpenCv C++ library**
 
-**v1.0.4**
+**v1.1.0**
 
 
 
@@ -41,7 +41,7 @@
 | 1.0.1   | 18.09.2023   | - Update used container for plots.                           |
 | 1.0.2   | 16.04.2024   | - Antialiased line drawing implemented.<br/>- Window size issue fixed.<br/>- Documentation updated. |
 | 1.0.3   | 17.05.2024   | - Documentation updated.                                     |
-| 1.0.4   | 18.07.2024   | - CMake structure updated.                                   |
+| 1.1.0   | 19.07.2024   | - CMake structure updated.<br />- Files renamed.             |
 
 
 
@@ -73,6 +73,11 @@ test ------------------------ Folder for test application.
 **Plot** class declared in **PlotOpenCv.h** file. Class declaration:
 
 ```cpp
+namespace cr
+{
+namespace utils
+{
+/// plot class.
 class Plot
 {
 public:
@@ -104,6 +109,8 @@ public:
     /// Method to show window.
     void show();
 };
+}
+}
 ```
 
 
@@ -125,7 +132,7 @@ std::cout << "PlotOpenCv class version: " << PlotOpenCv::getVersion();
 Console output:
 
 ```bash
-PlotOpenCv class version: 1.0.4
+PlotOpenCv class version: 1.1.0
 ```
 
 
@@ -145,8 +152,8 @@ void addPlot(std::vector<T> &points, int id, int start = 0, int end = 0,
 | id        | Identifier for chart on a window. Provides user to update a chart or add new one.  |
 | start     | Start index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset.|
 | end       | End index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset. |
-| color     | Color of chart line. |
-| thickness  | Thickness of chart line.|
+| color     | Color of chart line.                                         |
+| thickness | Thickness of chart line.                                     |
 
 
 
@@ -171,15 +178,15 @@ void addPlot(std::vector<std::vector<T>> &points, int id, int start = 0, int end
 **Table 2** - Supported data types.
 
 | Supported data types |
-| ---------| 
-| unsigned char |
-| char |
-| unsigned int |
-| unsigned short |
-| short int |
-| int |
-| float |
-| double |
+| ---------------------| 
+| unsigned char        |
+| char                 |
+| unsigned int         |
+| unsigned short       |
+| short int            |
+| int                  |
+| float                |
+| double               |
 
 
 
@@ -207,7 +214,6 @@ void clean();
 Typical commands to build **PlotOpenCv** library:
 
 ```bash
-git clone https://github.com/ConstantRobotics-Ltd/PlotOpenCv.git
 cd PlotOpenCv
 mkdir build
 cd build
@@ -225,14 +231,7 @@ src
     yourLib.cpp
 ```
 
-You can add repository **PlotOpenCv** as submodule by commands:
-
-```bash
-cd <your respository folder>
-git submodule add https://github.com/ConstantRobotics-Ltd/PlotOpenCv.git 3rdparty/PlotOpenCv
-```
-
-In you repository folder will be created folder **3rdparty/PlotOpenCv** which contains files of **PlotOpenCv** repository. New structure of your repository:
+create folder **3rdparty** in your repository and copy **PlotOpenCv** repository folder there. New structure of your repository:
 
 ```bash
 CMakeLists.txt

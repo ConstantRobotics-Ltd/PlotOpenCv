@@ -1,5 +1,5 @@
-#include "plotOpenCv.h"
-#include "plotOpenCvVersion.h"
+#include "PlotOpenCv.h"
+#include "PlotOpenCvVersion.h"
 
 
 
