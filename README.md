@@ -5,7 +5,7 @@
 
 # **PlotOpenCv C++ library**
 
-**v1.1.0**
+**v1.2.0**
 
 
 
@@ -16,18 +16,20 @@
 - [Library files](#library-files)
 - [plot class description](#plot-class-description)
   - [Class declaration](#class-declaration)
+  - [getVersion method](#getversion-method)
+  - [Class constructor](#class-constructor)
   - [addPlot (1D) method](#addplot-for-1d-dataset-method)
   - [addPlot (2D) method](#addplot-for-2d-dataset-method)
   - [clean method](#show-method)
   - [show method](#clean-method)
-- [Example](#example)
 - [Build and connect to your project](#build-and-connect-to-your-project)
+- [Example](#example)
 
 
 
 # Overview
 
-**PlotOpenCv** C++ library provides the visualization of 2-dimensional line charts. This library is built upon the OpenCV, providing users with a convenient and efficient tool for visualizing data through line charts. With **PlotOpenCv**, users can create multiple line charts within a single window and tune various chart parameters, such as line width, color, and more. It utilizes C++17 standard. The library is licensed under the Apache 2.0 license.
+**PlotOpenCv** C++ library provides the visualization of 2-dimensional line charts. This library is built upon the OpenCV, providing users with a convenient and efficient tool for visualizing data through line charts. With **PlotOpenCv**, users can create multiple line charts within a single window and tune various chart parameters, such as line width, color, and more. It utilizes C++17 standard. The library is licensed under the **Apache 2.0** license.
 
 
 
@@ -42,6 +44,7 @@
 | 1.0.2   | 16.04.2024   | - Antialiased line drawing implemented.<br/>- Window size issue fixed.<br/>- Documentation updated. |
 | 1.0.3   | 17.05.2024   | - Documentation updated.                                     |
 | 1.1.0   | 19.07.2024   | - CMake structure updated.<br />- Files renamed.             |
+| 1.2.0   | 23.07.2024   | - Files structure changed to hide opencv headers.<br />- Library interface changed. |
 
 
 
@@ -57,6 +60,9 @@ src ------------------------- Library source code folder.
     PlotOpenCvVersion.h ----- Header file with library version.
     PlotOpenCvVersion.h.in -- File for CMake to generate version header.
     PlotOpenCv.cpp ---------- C++ implementation file.
+    Impl -------------------- Folder with plot implementation.
+        PlotOpenCvImpl.h ---- Plot implementation header file.
+        PlotOpenCvImpl.cpp -- C++ implementation file.
 test ------------------------ Folder for test application.
     CMakeLists.txt ---------- CMake file of test application.
     main.cpp ---------------- Source code of test application.
@@ -77,7 +83,26 @@ namespace cr
 {
 namespace utils
 {
-/// plot class.
+
+/**
+ * @brief Plot color.
+*/
+class PlotColor
+{
+public:
+    /// Class constructor
+    PlotColor(int b, int g, int r) : b(b), g(g), r(r) {}
+    /// Blue color 0-255.  
+    int b{0};
+    /// Green color 0-255.
+    int g{0};
+    /// Red color 0-255.
+    int r{0};
+};
+
+/**
+ * @brief Plot class.
+ */
 class Plot
 {
 public:
@@ -87,8 +112,8 @@ public:
 
     /// Class constructor.
     Plot(std::string name, int width = 1280, int height = 720, 
-         cv::Scalar backgroundColor = cv::Scalar(255, 255, 255),
-         cv::Scalar scaleLineColor = cv::Scalar(0, 128, 128));
+         PlotColor backgroundColor = PlotColor(255, 255, 255),
+         PlotColor scaleLineColor = PlotColor(0, 128, 128));
 
     /// Class destructor.
     ~Plot();
@@ -96,12 +121,13 @@ public:
     /// Render plots on window.
     template <typename T>
     void addPlot(std::vector<T>& points, int id, int start = 0, int end = 0,
-                cv::Scalar color = cv::Scalar(255, 255, 255), int thickness = 1);
+                 PlotColor color = PlotColor(255, 255, 255), int thickness = 1);
+
     /// Method to render plots on window.
     template <typename T>
     void addPlot(std::vector<std::vector<T>>& points, int id, 
-                int start = 0, int end = 0,
-                cv::Scalar color = cv::Scalar(255, 255, 255), int thickness = 1);
+                 int start = 0, int end = 0,
+                 PlotColor color = PlotColor(255, 255, 255), int thickness = 1);
 
     /// Method to clean window.
     void clean();
@@ -132,7 +158,32 @@ std::cout << "PlotOpenCv class version: " << PlotOpenCv::getVersion();
 Console output:
 
 ```bash
-PlotOpenCv class version: 1.1.0
+PlotOpenCv class version: 1.2.0
+```
+
+
+## Class constructor
+
+The **Plot** class constructor requires basic parameters. Constructor declaration:
+
+```cpp
+Plot(std::string name, int width = 1280, int height = 720, 
+     PlotColor backgroundColor = PlotColor(255, 255, 255),
+     PlotColor scaleLineColor = PlotColor(0, 128, 128));
+```
+
+| Parameter       | Value                           |
+| --------------- | ------------------------------- |
+| name            | OpenCV window name.             |
+| width           | Window width, pixels.           |
+| height          | Window height, pixels.          |
+| backgroundColor | Background color, BGR.          |
+| scaleLineColor  | Scale line color, BGR.          |
+
+Example of class initialization:
+
+```cpp
+Plot graph("Test graph", 1280, 640, PlotColor(50, 50, 50));
 ```
 
 
@@ -148,7 +199,7 @@ void addPlot(std::vector<T> &points, int id, int start = 0, int end = 0,
 
 | Parameter | Value                                                        |
 | --------- | ------------------------------------------------------------ |
-| Points    | One dimensional vector which includes vertical points.Vector format : {y1, y2, ... }  |
+| Points    | One dimensional vector which includes vertical points. Vector format : {y1, y2, ... }  |
 | id        | Identifier for chart on a window. Provides user to update a chart or add new one.  |
 | start     | Start index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset.|
 | end       | End index of plot from vector when user wants to plot a specific range from a dataset. Should be 0 for whole dataset. |
@@ -162,8 +213,10 @@ void addPlot(std::vector<T> &points, int id, int start = 0, int end = 0,
 The **addPlot(...)** method serves the purpose of incorporating a new line chart into the existing window. It either introduces a new plot if the provided id is not yet present, or updates an existing plot associated with the given identifier. Method declaration:
 
 ```cpp
-void addPlot(std::vector<std::vector<T>> &points, int id, int start = 0, int end = 0,
-            cv::Scalar color = cv::Scalar(255, 255, 255), int thickness = 1);
+template <typename T>
+void addPlot(std::vector<std::vector<T>>& points, int id, 
+             int start = 0, int end = 0,
+             PlotColor color = PlotColor(255, 255, 255), int thickness = 1);
 ```
 
 | Parameter | Value                                                        |
@@ -231,7 +284,7 @@ src
     yourLib.cpp
 ```
 
-create folder **3rdparty** in your repository and copy **PlotOpenCv** repository folder there. New structure of your repository:
+Create folder **3rdparty** in your repository and copy **PlotOpenCv** repository folder there. New structure of your repository:
 
 ```bash
 CMakeLists.txt
@@ -321,13 +374,13 @@ The example demonstrates how to use **PlotOpenCv** library.
 
 int main()
 {    
-	plot graph("Test graph", 1280, 720,cv::Scalar(0, 128, 128) cv::Scalar(50, 50, 50));
+	plot graph("Test graph", 1280, 720, PlotColor(0, 128, 128) PlotColor(50, 50, 50));
 
     std::vector<float> linePoints(9000);
     std::vector<std::vector<float>> linePoints2(5000, std::vector<float>(2));
 
-    graph.addPlot(linePoints,0, 0, 0, cv::Scalar(255,0,0), 5);
-    graph.addPlot(linePoints2,1, 0, 0, cv::Scalar(0,255,0), 2);
+    graph.addPlot(linePoints, 0, 0, 0, PlotColor(255,0,0), 5);
+    graph.addPlot(linePoints2, 1, 0, 0, PlotColor(0,255,0), 2);
 
     graph.show();
     cv::waitKey(0);
@@ -335,11 +388,7 @@ int main()
 }
 ```
 
-
-
-# Example Charts
-
-Example charts shows what visual effects user should expect depending on input data.
+Example charts shows what visual effects user should expect depending on input data:
 
 ![plot_opencv_example_1](./static/plot_opencv_example_1.png)
 ![plot_opencv_example_2](./static/plot_opencv_example_2.png)

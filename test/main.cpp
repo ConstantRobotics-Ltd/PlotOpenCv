@@ -11,7 +11,7 @@ int main()
     std::cout << "plotOpenCv v" << Plot::getVersion() << " test" << std::endl;
 
     // Create plotting window.
-    Plot graph("Test graph", 1280, 640, cv::Scalar(50, 50, 50));
+    Plot graph("Test graph", 1280, 640, PlotColor(50, 50, 50));
 
     // Prepare 1d vector for plotting.
     std::vector<double> linePoints(9000);
@@ -49,9 +49,9 @@ int main()
     }
 
     // Put charts on graph.
-    graph.addPlot(linePoints, 0, 0, 0, cv::Scalar(255, 0, 0), 1);
-    graph.addPlot(linePoints2, 1, 0, 0, cv::Scalar(0, 255, 0), 1);
-    graph.addPlot(linePoints3, 2, 0, 0, cv::Scalar(0, 0, 255), 1);
+    graph.addPlot(linePoints, 0, 0, 0, PlotColor(255, 0, 0), 1);
+    graph.addPlot(linePoints2, 1, 0, 0, PlotColor(0, 255, 0), 1);
+    graph.addPlot(linePoints3, 2, 0, 0, PlotColor(0, 0, 255), 1);
 
     // Prepare 2d vector for plotting.
     std::vector<std::vector<double>> linePoints4(9000, std::vector<double>(2));
@@ -66,7 +66,7 @@ int main()
     }
 
     // Put chart on graph.
-    graph.addPlot(linePoints4, 3, 0, 5000, cv::Scalar(0, 0, 255), 2);
+    graph.addPlot(linePoints4, 3, 0, 5000, PlotColor(0, 0, 255), 2);
 
     // Show graph and wait.
     graph.show();
